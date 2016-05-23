@@ -22,7 +22,11 @@ body {
 <script>
 ;(function() {
     window.onload = function() {
-        var socket = new WebSocket('ws://'+location.host+"/term");
+        var proto = 'ws';
+        if (location.protocol == "https:"){
+            proto = 'wss';
+        }
+        var socket = new WebSocket(proto+'://'+location.host+"/term");
         var term = new Terminal({
             columns: 80,
             rows: 40,
