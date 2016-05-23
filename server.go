@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/url"
 
 	"github.com/Sirupsen/logrus"
@@ -89,7 +90,9 @@ func (h *handler) termServer(ws *websocket.Conn) {
 		var n int
 		n, err = attachWS.Read(msg)
 		if err != nil {
-			// TODO (jess): don't log if EOF jfc
+			if err == io.EOF {
+				continue
+			}
 			logrus.Errorf("reading from attach websocket failed: %v", err)
 			continue
 		}
