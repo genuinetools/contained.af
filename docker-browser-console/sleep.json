@@ -1,0 +1,10 @@
+{
+	"defaultAction": "SCMP_ACT_ERRNO",
+	"syscalls": [
+		{
+			"name": "nanosleep",
+			"action": "SCMP_ACT_ALLOW",
+			"args": []
+		}
+    ]
+}

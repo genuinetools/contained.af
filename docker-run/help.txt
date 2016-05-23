@@ -1,0 +1,14 @@
+Usage: docker-run [image] [options] [-- arg1 arg2 ...]
+
+  --host,       -H   [docker-host]
+  --dns         -d   [dns-server]
+  --env,        -e   [NAME=value]
+  --volume,     -v   [/host:/container]
+  --port,       -p   [host:container]
+  --net,        -n   [host|bridge|auto]
+  --entrypoint       [command]
+  --name             [container-name]
+  --tty,        -t
+  --version
+  --no-remove
+  --privileged
