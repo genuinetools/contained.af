@@ -141,6 +141,7 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 		&container.HostConfig{
 			SecurityOpt: securityOpts,
 			CapDrop:     strslice.StrSlice{"NET_RAW"},
+			NetworkMode: "none",
 		},
 		nil, "")
 	if err != nil {

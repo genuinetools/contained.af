@@ -29,7 +29,7 @@ body {
             x = w.innerWidth,
             y = w.innerHeight;
 
-        var socket = new WebSocket('ws://'+location.host+"/term");
+        var socket = new WebSocket('wss://'+location.host+"/term");
         var term = new Terminal({
             width: parseInt(x, 10),
             height: parseInt(y, 10),
