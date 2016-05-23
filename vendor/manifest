@@ -1,0 +1,248 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/Microsoft/go-winio",
+			"repository": "https://github.com/Microsoft/go-winio",
+			"vcs": "git",
+			"revision": "4f1a71750d95a5a8a46c40a67ffbed8129c2f138",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/Sirupsen/logrus",
+			"repository": "https://github.com/Sirupsen/logrus",
+			"vcs": "git",
+			"revision": "cd7d1bbe41066b6c1f19780f895901052150a575",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/distribution/digest",
+			"repository": "https://github.com/docker/distribution",
+			"vcs": "git",
+			"revision": "5bbf65499960b184fe8e0f045397375e1a6722b8",
+			"branch": "master",
+			"path": "digest",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/distribution/reference",
+			"repository": "https://github.com/docker/distribution",
+			"vcs": "git",
+			"revision": "5bbf65499960b184fe8e0f045397375e1a6722b8",
+			"branch": "master",
+			"path": "/reference",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/distribution/vendor/github.com/stevvooe/resumable",
+			"repository": "https://github.com/docker/distribution",
+			"vcs": "git",
+			"revision": "5bbf65499960b184fe8e0f045397375e1a6722b8",
+			"branch": "master",
+			"path": "vendor/github.com/stevvooe/resumable",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/engine-api/client",
+			"repository": "https://github.com/docker/engine-api",
+			"vcs": "git",
+			"revision": "83e511bd6c624b82a69e23f6c0904f14235d3a12",
+			"branch": "master",
+			"path": "/client",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/engine-api/types",
+			"repository": "https://github.com/docker/engine-api",
+			"vcs": "git",
+			"revision": "83e511bd6c624b82a69e23f6c0904f14235d3a12",
+			"branch": "master",
+			"path": "types",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/go-connections/nat",
+			"repository": "https://github.com/docker/go-connections",
+			"vcs": "git",
+			"revision": "c7838b258fbfa3fe88eecfb2a0e08ea0dbd6a646",
+			"branch": "master",
+			"path": "/nat",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/go-connections/sockets",
+			"repository": "https://github.com/docker/go-connections",
+			"vcs": "git",
+			"revision": "c7838b258fbfa3fe88eecfb2a0e08ea0dbd6a646",
+			"branch": "master",
+			"path": "sockets",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/go-connections/tlsconfig",
+			"repository": "https://github.com/docker/go-connections",
+			"vcs": "git",
+			"revision": "c7838b258fbfa3fe88eecfb2a0e08ea0dbd6a646",
+			"branch": "master",
+			"path": "tlsconfig",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/go-units",
+			"repository": "https://github.com/docker/go-units",
+			"vcs": "git",
+			"revision": "5d2041e26a699eaca682e2ea41c8f891e1060444",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/golang/protobuf/proto",
+			"repository": "https://github.com/golang/protobuf",
+			"vcs": "git",
+			"revision": "cd85f19845cc96cc6e5269c894d8cd3c67e9ed83",
+			"branch": "master",
+			"path": "/proto",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/golang/protobuf/ptypes/any",
+			"repository": "https://github.com/golang/protobuf",
+			"vcs": "git",
+			"revision": "cd85f19845cc96cc6e5269c894d8cd3c67e9ed83",
+			"branch": "master",
+			"path": "ptypes/any",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/onsi/ginkgo",
+			"repository": "https://github.com/onsi/ginkgo",
+			"vcs": "git",
+			"revision": "5437a97bf824dec14e58d68c56ee36e772670c2e",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/onsi/gomega",
+			"repository": "https://github.com/onsi/gomega",
+			"vcs": "git",
+			"revision": "c73e51675ad2455a4515b6213eb7145eaade4824",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/opencontainers/runc/libcontainer/user",
+			"repository": "https://github.com/opencontainers/runc",
+			"vcs": "git",
+			"revision": "d2d09b9bcd0573c58d7cd94e57bd7555af0c2072",
+			"branch": "master",
+			"path": "/libcontainer/user",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/stretchr/testify/assert",
+			"repository": "https://github.com/stretchr/testify",
+			"vcs": "git",
+			"revision": "6cb3b85ef5a0efef77caef88363ec4d4b5c0976d",
+			"branch": "master",
+			"path": "/assert",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/stretchr/testify",
+			"vcs": "git",
+			"revision": "6cb3b85ef5a0efef77caef88363ec4d4b5c0976d",
+			"branch": "master",
+			"path": "vendor/github.com/davecgh/go-spew/spew",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
+			"repository": "https://github.com/stretchr/testify",
+			"vcs": "git",
+			"revision": "6cb3b85ef5a0efef77caef88363ec4d4b5c0976d",
+			"branch": "master",
+			"path": "vendor/github.com/pmezard/go-difflib/difflib",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"vcs": "git",
+			"revision": "0c607074acd38c5f23d1344dfe74c977464d1257",
+			"branch": "master",
+			"path": "/context",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/proxy",
+			"repository": "https://go.googlesource.com/net",
+			"vcs": "git",
+			"revision": "0c607074acd38c5f23d1344dfe74c977464d1257",
+			"branch": "master",
+			"path": "proxy",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/websocket",
+			"repository": "https://go.googlesource.com/net",
+			"vcs": "git",
+			"revision": "0c607074acd38c5f23d1344dfe74c977464d1257",
+			"branch": "master",
+			"path": "/websocket",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/sys/unix",
+			"repository": "https://go.googlesource.com/sys",
+			"vcs": "git",
+			"revision": "d4feaf1a7e61e1d9e79e6c4e76c6349e9cab0a03",
+			"branch": "master",
+			"path": "/unix",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/sys/windows",
+			"repository": "https://go.googlesource.com/sys",
+			"vcs": "git",
+			"revision": "d4feaf1a7e61e1d9e79e6c4e76c6349e9cab0a03",
+			"branch": "master",
+			"path": "windows",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/airbrake/gobrake.v2",
+			"repository": "https://gopkg.in/airbrake/gobrake.v2",
+			"vcs": "git",
+			"revision": "31c8ff1fb8b79a6947e6565e9a6df535f98a6b94",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/check.v1",
+			"repository": "https://gopkg.in/check.v1",
+			"vcs": "git",
+			"revision": "4f90aeace3a26ad7021961c297b22c42160c7b25",
+			"branch": "v1",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/gemnasium/logrus-airbrake-hook.v2",
+			"repository": "https://gopkg.in/gemnasium/logrus-airbrake-hook.v2",
+			"vcs": "git",
+			"revision": "31e6fd4bd5a98d8ee7673d24bc54ec73c31810dd",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"vcs": "git",
+			"revision": "a83829b6f1293c91addabc89d0571c246397bbf4",
+			"branch": "v2",
+			"notests": true
+		}
+	]
+}

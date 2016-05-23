@@ -1,37 +1,34 @@
-FROM mhart/alpine-node:5
+FROM alpine
+MAINTAINER Jessica Frazelle <jess@docker.com>
 
-RUN apk add --no-cache \
-	bash \
-	build-base \
-	curl \
-	e2fsprogs \
-	e2fsprogs-extra \
-	iptables \
-	make \
-	python \
-	tar \
-	xz
+ENV PATH /go/bin:/usr/local/go/bin:$PATH
+ENV GOPATH /go
+ENV GO15VENDOREXPERIMENT 1
 
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.11.0
-ENV DOCKER_SHA256 87331b3b75d32d3de5d507db9a19a24dd30ff9b2eb6a5a9bdfaba954da15e16b
+RUN	apk update && apk add \
+	ca-certificates \
+	&& rm -rf /var/cache/apk/*
 
-RUN set -x \
-	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz" -o docker.tgz \
-	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
-	&& tar -xzvf docker.tgz \
-	&& mv docker/* /usr/local/bin/ \
-	&& rmdir docker \
-	&& rm docker.tgz \
-	&& docker -v
+COPY . /go/src/github.com/jfrazelle/contained
 
-WORKDIR /usr/src/seccomp-term
+RUN buildDeps=' \
+		go \
+		git \
+		gcc \
+		libc-dev \
+		libgcc \
+	' \
+	set -x \
+	&& apk update \
+	&& apk add $buildDeps \
+	&& cd /go/src/github.com/jfrazelle/contained \
+	&& go build -o /usr/bin/contained . \
+	&& apk del $buildDeps \
+	&& rm -rf /var/cache/apk/* \
+	&& rm -rf /go \
+	&& echo "Build complete."
 
-COPY package.json /usr/src/seccomp-term/
+COPY static /usr/src/contained/
+WORKDIR /usr/src/contained
 
-RUN npm install
-
-COPY . /usr/src/seccomp-term/
-
-#CMD ["node", "app.js"]
-CMD ["bash"]
+ENTRYPOINT [ "contained" ]
