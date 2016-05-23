@@ -22,17 +22,10 @@ body {
 <script>
 ;(function() {
     window.onload = function() {
-        var w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0],
-            x = w.innerWidth,
-            y = w.innerHeight;
-
-        var socket = new WebSocket('wss://'+location.host+"/term");
+        var socket = new WebSocket('ws://'+location.host+"/term");
         var term = new Terminal({
-            width: parseInt(x, 10),
-            height: parseInt(y, 10),
+            columns: 80,
+            rows: 40,
             useStyle: true,
             screenKeys: true,
             cursorBlink: false
@@ -42,11 +35,7 @@ body {
         });
         term.open(document.body);
         socket.onopen = function (event) {
-            socket.send(JSON.stringify({
-                type: 'run',
-                width: x,
-                height: y
-            }));
+            windowSize(term, socket, 'run');
         };
         term.on('data', function(data) {
             socket.send(JSON.stringify({
@@ -64,20 +53,36 @@ body {
             term.destroy()
         };
         window.onresize = function(event) {
-            var w = window,
-                d = document,
-                e = d.documentElement,
-                g = d.getElementsByTagName('body')[0],
-                x = w.innerWidth,
-                y = w.innerHeight;
-
-            socket.send(JSON.stringify({
-                type: 'resize',
-                width: parseInt(x, 10),
-                height: parseInt(y, 10)
-            }));
-            term.resize(parseInt(x, 10), parseInt(y, 10));
+            windowSize(term, socket, 'resize');
         };
     };
 }).call(this);
+function windowSize(term, socket, this_type) {
+    if( typeof( window.innerWidth ) == 'number' ) {
+        //Non-IE
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+    } else if( document.documentElement && (
+                document.documentElement.clientWidth ||
+                document.documentElement.clientHeight ) ) {
+        //IE 6+ in 'standards compliant mode'
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+    } else if( document.body && ( document.body.clientWidth ||
+                document.body.clientHeight ) ) {
+        //IE 4 compatible
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
+    }
+    myWidth = Math.floor(parseInt(myWidth, 10) / 13);
+    myHeight = Math.floor(parseInt(myHeight, 10) / 15);
+    term.resize(myWidth, myHeight);
+    socket.send(JSON.stringify({
+        type: this_type,
+        width: myWidth,
+        height: myHeight
+    }));
+    //console.log("width", myWidth);
+    //console.log("height", myHeight)
+}
 </script>
