@@ -3,7 +3,11 @@ PREFIX?=$(shell pwd)
 BUILDTAGS=
 
 .PHONY: clean all dbuild run fmt vet lint build test install static
-.DEFAULT: default
+
+DIND_CONTAINER=contained-dind
+DIND_DOCKER_IMAGE=r.j3ss.co/docker:userns
+DOCKER_IMAGE=r.j3ss.co/contained
+
 
 all: clean build fmt lint test vet
 
@@ -36,24 +40,24 @@ clean:
 	@rm -rf contained
 
 dbuild:
-	docker build --rm --force-rm -t r.j3ss.co/contained .
+	docker build --rm --force-rm -t $(DOCKER_IMAGE) .
 
 dind:
-	docker build --rm --force-rm -f Dockerfile.dind -t docker:userns .
+	docker build --rm --force-rm -f Dockerfile.dind -t $(DIND_DOCKER_IMAGE) .
 	docker run -d \
-		--name dind \
+		--name $(DIND_CONTAINER) \
 		--privileged \
 		-p 1234:10000 \
-		docker:userns \
+		$(DIND_DOCKER_IMAGE) \
 		docker daemon -D --storage-driver overlay \
 		-H tcp://127.0.0.1:2375 \
 		--host=unix:///var/run/docker.sock \
 		--disable-legacy-registry=true \
 		--userns-remap default \
 		--exec-opt=native.cgroupdriver=cgroupfs
+	docker exec -it $(DIND_CONTAINER) docker pull alpine
 
 run: dbuild
 	docker run --rm -it \
-		-v $(CURDIR):/usr/src/seccomp-term \
-		--net container:dind \
-		r.j3ss.co/contained -d
+		--net container:$(DIND_CONTAINER) \
+		$(DOCKER_IMAGE) -d

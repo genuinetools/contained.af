@@ -1,0 +1,16 @@
+#console {
+	min-height: 400px;
+	float: left;
+	width: 100%;
+	border: #000 solid 5px;
+	background: #000;
+}
+.terminal {
+	float: left;
+	font-family: "DejaVu Sans Mono", "Liberation Mono", "Consolas", monospace;
+	color: #f0f0f0;
+	background: #000;
+}
+.terminal-cursor {
+  	background-color: #ccc;
+}

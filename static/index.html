@@ -1,92 +1,27 @@
-<!doctype html>
-<title>contained.af</title>
-<link href="normalize.css" media="all" rel="stylesheet" />
-<style>
-body {
-    background: #000;
-}
-.terminal {
-    float: left;
-    border: #000 solid 5px;
-    font-family: "DejaVu Sans Mono", "Liberation Mono", "Consolas", monospace;
-    font-size: 13px;
-    color: #f0f0f0;
-    background: #000;
-}
-.terminal-cursor {
-    color: #000;
-    background: #f0f0f0;
-}
-</style>
-<script src="term.js"></script>
-<script>
-;(function() {
-    window.onload = function() {
-        var proto = 'ws';
-        if (location.protocol == "https:"){
-            proto = 'wss';
-        }
-        var socket = new WebSocket(proto+'://'+location.host+"/term");
-        var term = new Terminal({
-            columns: 80,
-            rows: 40,
-            useStyle: true,
-            screenKeys: true,
-            cursorBlink: false
-        });
-        term.on('title', function(title) {
-            document.title = title;
-        });
-        term.open(document.body);
-        socket.onopen = function (event) {
-            windowSize(term, socket, 'run');
-        };
-        term.on('data', function(data) {
-            socket.send(JSON.stringify({
-                type:'stdin',
-                data: data
-            }));
-        });
-        socket.onmessage = function (event) {
-            //console.log("input", JSON.stringify(event));
-            var obj = JSON.parse(event.data);
-            //console.log("data", obj.data);
-            term.write(obj.data);
-        };
-        socket.onclose = function (event) {
-            term.destroy()
-        };
-        window.onresize = function(event) {
-            windowSize(term, socket, 'resize');
-        };
-    };
-}).call(this);
-function windowSize(term, socket, this_type) {
-    if( typeof( window.innerWidth ) == 'number' ) {
-        //Non-IE
-        myWidth = window.innerWidth;
-        myHeight = window.innerHeight;
-    } else if( document.documentElement && (
-                document.documentElement.clientWidth ||
-                document.documentElement.clientHeight ) ) {
-        //IE 6+ in 'standards compliant mode'
-        myWidth = document.documentElement.clientWidth;
-        myHeight = document.documentElement.clientHeight;
-    } else if( document.body && ( document.body.clientWidth ||
-                document.body.clientHeight ) ) {
-        //IE 4 compatible
-        myWidth = document.body.clientWidth;
-        myHeight = document.body.clientHeight;
-    }
-    myWidth = Math.floor(parseInt(myWidth, 10) / 13);
-    myHeight = Math.floor(parseInt(myHeight, 10) / 15);
-    term.resize(myWidth, myHeight);
-    socket.send(JSON.stringify({
-        type: this_type,
-        width: myWidth,
-        height: myHeight
-    }));
-    //console.log("width", myWidth);
-    //console.log("height", myHeight)
-}
-</script>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>contained.af</title>
+
+		<link href="normalize.css" media="all" rel="stylesheet" />
+		<link href="bootstrap.min.css" media="all" rel="stylesheet" />
+		<link href="custom.css" media="all" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<h1>Guess the syscall!?</h1>
+				<p>The hottest, nerdiest new game in town.</p>
+			</div>
+
+			<div id="console"></div>
+		</div>
+
+		<script src="term.js"></script>
+		<script src="main.js"></script>
+	</body>
+</html>

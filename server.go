@@ -60,18 +60,13 @@ func (h *handler) termServer(ws *websocket.Conn) {
 			// send to attach websocket or resize
 			switch data.Type {
 			case "stdin":
-				if _, err := attachWS.Write([]byte(data.Data)); err != nil {
-					logrus.Errorf("writing to attach websocket failed: %v", err)
+				if len(data.Data) > 0 {
+					if _, err := attachWS.Write([]byte(data.Data)); err != nil {
+						logrus.Errorf("writing to attach websocket failed: %v", err)
+					}
+					logrus.Debugf("Wrote to attach websocket: %q", data.Data)
 				}
-				logrus.Debugf("Wrote to attach websocket: %s", data.Data)
 			case "resize":
-				if err := h.dcli.ContainerResize(context.Background(), cid, types.ResizeOptions{
-					Height: data.Height,
-					Width:  data.Width,
-				}); err != nil {
-					logrus.Errorf("resize container to height -> %d, width: %d failed: %v", data.Height, data.Width, err)
-				}
-			case "run":
 				if err := h.dcli.ContainerResize(context.Background(), cid, types.ResizeOptions{
 					Height: data.Height,
 					Width:  data.Width,
@@ -125,6 +120,8 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 	}
 	securityOpts = append(securityOpts, fmt.Sprintf("seccomp=%s", b.Bytes()))
 
+	dropCaps := &strslice.StrSlice{"NET_RAW"}
+
 	// create the container
 	r, err := h.dcli.ContainerCreate(
 		context.Background(),
@@ -140,7 +137,7 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 		},
 		&container.HostConfig{
 			SecurityOpt: securityOpts,
-			CapDrop:     strslice.StrSlice{"NET_RAW"},
+			CapDrop:     *dropCaps,
 			NetworkMode: "none",
 		},
 		nil, "")

@@ -9,7 +9,8 @@ RUN	apk update && apk add \
 	ca-certificates \
 	&& rm -rf /var/cache/apk/*
 
-COPY . /go/src/github.com/jfrazelle/contained
+COPY *.go /go/src/github.com/jfrazelle/contained/
+COPY vendor /go/src/github.com/jfrazelle/contained/vendor
 
 RUN buildDeps=' \
 		go \
