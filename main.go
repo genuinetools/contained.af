@@ -21,8 +21,9 @@ const (
 	// VERSION is the binary version.
 	VERSION = "v0.1.0"
 
-	defaultStaticDir  = "/usr/src/contained"
-	defaultDockerHost = "http://127.0.0.1:2375"
+	defaultStaticDir   = "/usr/src/contained"
+	defaultDockerHost  = "http://127.0.0.1:2375"
+	defaultDockerImage = "alpine:latest"
 )
 
 var (
@@ -83,6 +84,11 @@ func main() {
 	h := &handler{
 		dcli:      dcli,
 		dockerURL: dockerURL,
+	}
+
+	// pull alpine image if we don't already have it
+	if err := h.pullImage(defaultDockerImage); err != nil {
+		logrus.Fatalf("pulling %s failed: %v", defaultDockerImage, err)
 	}
 
 	// websocket handler

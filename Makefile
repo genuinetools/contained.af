@@ -55,7 +55,6 @@ dind:
 		--disable-legacy-registry=true \
 		--userns-remap default \
 		--exec-opt=native.cgroupdriver=cgroupfs
-	docker exec -it $(DIND_CONTAINER) docker pull alpine
 
 run: dbuild
 	docker run --rm -it \

@@ -2,6 +2,14 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/Azure/go-ansiterm",
+			"repository": "https://github.com/Azure/go-ansiterm",
+			"vcs": "git",
+			"revision": "388960b655244e76e24c75f48631564eaefade62",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/Microsoft/go-winio",
 			"repository": "https://github.com/Microsoft/go-winio",
 			"vcs": "git",
@@ -42,6 +50,42 @@
 			"revision": "5bbf65499960b184fe8e0f045397375e1a6722b8",
 			"branch": "master",
 			"path": "vendor/github.com/stevvooe/resumable",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/docker/pkg/jsonlog",
+			"repository": "https://github.com/docker/docker",
+			"vcs": "git",
+			"revision": "29dbcbad878483d9239d6a432c85620aced895c4",
+			"branch": "master",
+			"path": "pkg/jsonlog",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/docker/pkg/jsonmessage",
+			"repository": "https://github.com/docker/docker",
+			"vcs": "git",
+			"revision": "29dbcbad878483d9239d6a432c85620aced895c4",
+			"branch": "master",
+			"path": "/pkg/jsonmessage",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/docker/pkg/system",
+			"repository": "https://github.com/docker/docker",
+			"vcs": "git",
+			"revision": "29dbcbad878483d9239d6a432c85620aced895c4",
+			"branch": "master",
+			"path": "pkg/system",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/docker/docker/pkg/term",
+			"repository": "https://github.com/docker/docker",
+			"vcs": "git",
+			"revision": "29dbcbad878483d9239d6a432c85620aced895c4",
+			"branch": "master",
+			"path": "pkg/term",
 			"notests": true
 		},
 		{

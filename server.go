@@ -1,17 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
 	"io"
 	"net/url"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/client"
 	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/container"
-	"github.com/docker/engine-api/types/strslice"
 
 	"golang.org/x/net/context"
 	"golang.org/x/net/websocket"
@@ -110,68 +105,4 @@ func (h *handler) termServer(ws *websocket.Conn) {
 	if err := h.removeContainer(cid); err != nil {
 		logrus.Errorf("removing container %s failed: %v", cid, err)
 	}
-}
-
-func (h *handler) startContainer() (string, *websocket.Conn, error) {
-	securityOpts := []string{"no-new-privileges"}
-	b := bytes.NewBuffer(nil)
-	if err := json.Compact(b, []byte(seccompProfile)); err != nil {
-		return "", nil, fmt.Errorf("compacting json for seccomp profile failed: %v", err)
-	}
-	securityOpts = append(securityOpts, fmt.Sprintf("seccomp=%s", b.Bytes()))
-
-	dropCaps := &strslice.StrSlice{"NET_RAW"}
-
-	// create the container
-	r, err := h.dcli.ContainerCreate(
-		context.Background(),
-		&container.Config{
-			Image:        "alpine:latest",
-			Cmd:          []string{"sh"},
-			Tty:          true,
-			AttachStdin:  true,
-			AttachStdout: true,
-			AttachStderr: true,
-			OpenStdin:    true,
-			StdinOnce:    true,
-		},
-		&container.HostConfig{
-			SecurityOpt: securityOpts,
-			CapDrop:     *dropCaps,
-			NetworkMode: "none",
-		},
-		nil, "")
-	if err != nil {
-		return "", nil, err
-	}
-
-	// connect to the attach websocket endpoint
-	origin := h.dockerURL.String()
-	wsURL := fmt.Sprintf("ws://%s/%s/containers/%s/attach/ws?logs=1&stderr=1&stdout=1&stream=1&stdin=1", h.dockerURL.Host, dockerAPIVersion, r.ID)
-	attachWS, err := websocket.Dial(wsURL, "", origin)
-	if err != nil {
-		return r.ID, nil, fmt.Errorf("dialing %s with origin %s failed: %v", wsURL, origin, err)
-	}
-
-	// start the container
-	if err := h.dcli.ContainerStart(context.Background(), r.ID, ""); err != nil {
-		return r.ID, attachWS, err
-	}
-
-	return r.ID, attachWS, nil
-}
-
-// removeContainer removes with force a container by it's container ID.
-func (h *handler) removeContainer(cid string) error {
-	if err := h.dcli.ContainerRemove(context.Background(), cid,
-		types.ContainerRemoveOptions{
-			RemoveVolumes: true,
-			Force:         true,
-		}); err != nil {
-		return err
-	}
-
-	logrus.Debugf("removed container: %s", cid)
-
-	return nil
 }
