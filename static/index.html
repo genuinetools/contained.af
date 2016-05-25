@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>contained.af</title>
+        <title>contained.af</title>
 
-		<link href="normalize.css" media="all" rel="stylesheet" />
-		<link href="bootstrap.min.css" media="all" rel="stylesheet" />
-		<link href="custom.css" media="all" rel="stylesheet" />
-	</head>
-	<body>
-		<div class="container">
-			<div class="jumbotron">
-				<h1>Guess the syscall!?</h1>
-				<p>The hottest, nerdiest new game in town.</p>
-			</div>
+        <link href="normalize.css" media="all" rel="stylesheet" />
+        <link href="bootstrap.min.css" media="all" rel="stylesheet" />
+        <link href="custom.css" media="all" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Know your surroundings...</h1>
+                <p class="lead">The hottest, nerdiest new game in town.</p>
+            </div>
 
-			<div id="console"></div>
-		</div>
 
-		<script src="term.js"></script>
-		<script src="main.js"></script>
-	</body>
+            <div id="console"></div>
+
+            <div class="well question">
+                <blockquote>
+                    <p><code>CAP_NET_RAW</code> allows you to use RAW and PACKET sockets and bind to any address for transparent proxying.</p>
+                </blockquote>
+
+                <p class="lead">Do you have access to <code>CAP_NET_RAW</code>?</p>
+            </div>
+
+            <footer class="footer">
+                <p>There is a CTF on every VM instance. <b><em>If</em></b>&nbsp;
+                you manage to break out of the container, email
+                <a href="mailto:not.quite@contained.af">not.quite@contained.af</a>
+                and you will be rewarded. <br/>
+                <em>If</em>&nbsp; you bother this email address with anything
+                that is not the ascii art contents of the flag file you will be
+                ignored.</p>
+            </footer>
+        </div>
+
+
+        <script src="term.js"></script>
+        <script src="main.js"></script>
+    </body>
 </html>

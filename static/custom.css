@@ -1,9 +1,12 @@
 #console {
 	min-height: 400px;
-	float: left;
 	width: 100%;
 	border: #000 solid 5px;
 	background: #000;
+    margin: 25px 0px;
+}
+.question {
+    margin: 25px 0px 100px 0px;
 }
 .terminal {
 	float: left;
@@ -13,4 +16,8 @@
 }
 .terminal-cursor {
   	background-color: #ccc;
+}
+footer {
+    text-align:center;
+    padding: 0px 30px;
 }
