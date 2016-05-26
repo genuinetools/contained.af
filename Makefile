@@ -54,6 +54,7 @@ dind:
 		--host=unix:///var/run/docker.sock \
 		--disable-legacy-registry=true \
 		--userns-remap default \
+		--log-driver=none \
 		--exec-opt=native.cgroupdriver=cgroupfs
 
 run: dbuild
