@@ -33,6 +33,7 @@ func (h *handler) termServer(ws *websocket.Conn) {
 	cid, attachWS, err := h.startContainer()
 	if err != nil {
 		logrus.Errorf("starting container failed: %v", err)
+		return
 	}
 	logrus.Debugf("container started with id: %s", cid)
 
@@ -78,6 +79,7 @@ func (h *handler) termServer(ws *websocket.Conn) {
 	for isOpen {
 		var msg = make([]byte, 512)
 		var n int
+		// TODO: this will panic if we couldn't start the container
 		n, err = attachWS.Read(msg)
 		if err != nil {
 			if err == io.EOF {

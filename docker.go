@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 
 	"github.com/Sirupsen/logrus"
@@ -20,12 +21,14 @@ import (
 // startContainer starts a docker container and returns the container ID
 // as well as a websocket connection to the attach endpoint.
 func (h *handler) startContainer() (string, *websocket.Conn, error) {
-	securityOpts := []string{"no-new-privileges"}
+	securityOpts := []string{
+		"no-new-privileges",
+	}
 	b := bytes.NewBuffer(nil)
 	if err := json.Compact(b, []byte(seccompProfile)); err != nil {
 		return "", nil, fmt.Errorf("compacting json for seccomp profile failed: %v", err)
 	}
-	securityOpts = append(securityOpts, fmt.Sprintf("seccomp=%s", b.Bytes()))
+	securityOpts = append(securityOpts, fmt.Sprintf("seccomp:%s", b.Bytes()))
 
 	dropCaps := &strslice.StrSlice{"NET_RAW"}
 
@@ -46,6 +49,9 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 			SecurityOpt: securityOpts,
 			CapDrop:     *dropCaps,
 			NetworkMode: "none",
+			LogConfig: container.LogConfig{
+				Type: "none",
+			},
 		},
 		nil, "")
 	if err != nil {
@@ -54,7 +60,13 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 
 	// connect to the attach websocket endpoint
 	origin := h.dockerURL.String()
-	wsURL := fmt.Sprintf("ws://%s/%s/containers/%s/attach/ws?logs=1&stderr=1&stdout=1&stream=1&stdin=1", h.dockerURL.Host, dockerAPIVersion, r.ID)
+	v := url.Values{
+		"stdin":  []string{"1"},
+		"stdout": []string{"1"},
+		"stderr": []string{"1"},
+		"stream": []string{"1"},
+	}
+	wsURL := fmt.Sprintf("ws://%s/%s/containers/%s/attach/ws?%s", h.dockerURL.Host, dockerAPIVersion, r.ID, v.Encode())
 	attachWS, err := websocket.Dial(wsURL, "", origin)
 	if err != nil {
 		return r.ID, nil, fmt.Errorf("dialing %s with origin %s failed: %v", wsURL, origin, err)

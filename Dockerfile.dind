@@ -1,4 +1,4 @@
-FROM docker:dind
+FROM docker:1.11.1-dind
 
 RUN apk add --no-cache \
 	--repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
