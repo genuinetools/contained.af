@@ -46,6 +46,9 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 			SecurityOpt: securityOpts,
 			CapDrop:     *dropCaps,
 			NetworkMode: "none",
+			LogConfig: container.LogConfig{
+				Type: "none",
+			},
 		},
 		nil, "")
 	if err != nil {
