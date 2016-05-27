@@ -35,7 +35,7 @@ func (h *handler) termServer(ws *websocket.Conn) {
 		logrus.Errorf("starting container failed: %v", err)
 		return
 	}
-	logrus.Debugf("container started with id: %s", cid)
+	logrus.Infof("container started with id: %s", cid)
 
 	isOpen := true
 
@@ -88,7 +88,7 @@ func (h *handler) termServer(ws *websocket.Conn) {
 			logrus.Errorf("reading from attach websocket failed: %v", err)
 			continue
 		}
-		logrus.Infof("Received from attach websocket: %s", string(msg[:n]))
+		logrus.Debugf("Received from attach websocket: %s", string(msg[:n]))
 
 		// send it back through to the browser client as a binary frame
 		b := message{

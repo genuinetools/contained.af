@@ -2,7 +2,7 @@
 PREFIX?=$(shell pwd)
 BUILDTAGS=
 
-.PHONY: clean all dbuild run fmt vet lint build test install static
+.PHONY: clean all dbuild dev devbuild run fmt vet lint build test install static
 
 DIND_CONTAINER=contained-dind
 DIND_DOCKER_IMAGE=r.j3ss.co/docker:userns
@@ -61,3 +61,24 @@ run: dbuild
 	docker run --rm -it \
 		--net container:$(DIND_CONTAINER) \
 		$(DOCKER_IMAGE) -d
+
+devbuild:
+	docker build --rm --force-rm -f Dockerfile.dev -t $(DOCKER_IMAGE):dev .
+
+static/js/contained.min.js: devbuild
+	docker run --rm -it \
+		-v $(CURDIR)/:/usr/src/contained.af \
+		--workdir /usr/src/contained.af \
+		$(DOCKER_IMAGE):dev \
+			uglifyjs --output $@ --compress --mangle -- \
+			static/js/jquery-2.2.4.min.js static/js/term.js \
+			static/js/questions.js static/js/main.js
+
+static/css/contained.min.css: devbuild
+	docker run --rm -it \
+		-v $(CURDIR)/:/usr/src/contained.af \
+		--workdir /usr/src/contained.af \
+		$(DOCKER_IMAGE):dev \
+			bash -c 'cat static/css/normalize.css static/css/bootstrap.min.css static/css/custom.css | cleancss -o $@'
+
+dev: static/js/contained.min.js static/css/contained.min.css

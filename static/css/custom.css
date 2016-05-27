@@ -5,7 +5,7 @@
 	background: #000;
     margin: 25px 0px;
 }
-.question {
+#question {
     margin: 25px 0px 100px 0px;
 }
 .terminal {
@@ -16,6 +16,4 @@
 }
 .terminal-cursor {
   	background-color: #ccc;
-}
-footer {
 }

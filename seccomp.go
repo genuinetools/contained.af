@@ -65,11 +65,6 @@ const (
 			"args": []
 		},
 		{
-			"name": "clock_nanosleep",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "close",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -740,11 +735,6 @@ const (
 			"args": []
 		},
 		{
-			"name": "nanosleep",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "newfstatat",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -1282,16 +1272,6 @@ const (
 		},
 		{
 			"name": "sigreturn",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "socket",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "socketpair",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
 		},

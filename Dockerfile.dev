@@ -1,0 +1,5 @@
+FROM node
+
+RUN npm install --global \
+	clean-css \
+	uglify-js

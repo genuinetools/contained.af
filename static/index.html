@@ -7,9 +7,7 @@
 
 		<title>contained.af</title>
 
-		<link href="normalize.css" media="all" rel="stylesheet" />
-		<link href="bootstrap.min.css" media="all" rel="stylesheet" />
-		<link href="custom.css" media="all" rel="stylesheet" />
+		<link href="css/contained.min.css" media="all" rel="stylesheet" />
 	</head>
 	<body>
 		<div class="container">
@@ -21,12 +19,27 @@
 
 			<div id="console"></div>
 
-			<div class="well question">
+			<div id="question" class="well invisible">
 				<blockquote>
 					<p><code>CAP_NET_RAW</code> allows you to use RAW and PACKET sockets and bind to any address for transparent proxying.</p>
 				</blockquote>
 
-				<p class="lead">Do you have access to <code>CAP_NET_RAW</code>?</p>
+				<p class="lead content">Do you have access to <code>CAP_NET_RAW</code>?</p>
+
+                <div id="warning" class="alert alert-warning hide" role="alert">
+                    <strong>Not quite...</strong> Try running <code>ping</code> or <code>wget</code>.
+                </div>
+
+                <div id="correct" class="alert alert-success hide" role="alert">
+                    <strong>Congrats!</strong> You are correct.
+                </div>
+
+                <p>
+                    <button id="yes" type="button" class="btn btn-secondary">Yes</button>
+                    <button id="no" type="button" class="btn btn-secondary">No</button>
+                </p>
+
+                <input id="current" class="hide" />
 			</div>
 
 			<footer class="footer">
@@ -50,7 +63,6 @@ to <a href="https://github.com/jfrazelle/contained.af" target="_blank">github.co
 		</div>
 
 
-		<script src="term.js"></script>
-		<script src="main.js"></script>
+		<script src="js/contained.min.js"></script>
 	</body>
 </html>
