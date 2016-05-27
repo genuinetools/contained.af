@@ -1,14 +1,16 @@
-FROM alpine:3.3
+FROM debian:jessie
 
-# https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
-RUN apk add --no-cache \
-	btrfs-progs \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+	aufs-tools \
+	btrfs-tools \
+	ca-certificates \
 	curl \
 	e2fsprogs \
-	e2fsprogs-extra \
 	iptables \
+	procps \
 	xfsprogs \
-	xz
+	xz-utils \
+	&& rm -rf /var/lib/apt/lists/*
 
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.11.1
@@ -23,16 +25,9 @@ RUN set -x \
 	&& rm docker.tgz \
 	&& docker -v
 
-# we need adduser/useradd for userns
-RUN apk add --no-cache \
-	--repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
-	shadow
-
 ENV DIND_COMMIT 3b5fac462d21ca164b3778647420016315289034
 
-RUN wget "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -O /usr/local/bin/dind \
-	&& sed -i.bak 's/#!\/bin\/bash/#!\/bin\/sh/' /usr/local/bin/dind \
-	&& rm -rf /usr/local/bin/*.bak \
+RUN curl -sSL "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -o /usr/local/bin/dind \
 	&& chmod +x /usr/local/bin/dind
 
 EXPOSE 2375
