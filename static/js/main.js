@@ -52,7 +52,7 @@
             $('#question #correct').addClass('hide');
             $('#question #warning').addClass('hide').html(q.warning);
             $('#question #correct p').html(q.success);
-            $('#question #current').val(index + 1);
+            $('#question #current').val(index);
 
             $('#question blockquote').removeClass('invisible');
             $('#question .content').removeClass('invisible');
@@ -96,7 +96,6 @@
         $('#next').click(function(){
             var index = $('#question #current').val();
             index++;
-            $('#question #current').val(index);
             loadQuestion(index);
         });
 
