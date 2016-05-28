@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>contained.af</title>
+        <title>contained.af</title>
 
-		<link href="css/contained.min.css" media="all" rel="stylesheet" />
-	</head>
-	<body>
-		<div class="container">
-			<div class="page-header">
-				<h1>Know your surroundings...</h1>
-				<p class="lead">The hottest, nerdiest new game in town.</p>
-			</div>
+        <link href="css/contained.min.css" media="all" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Know your surroundings...</h1>
+                <p class="lead">The hottest, nerdiest new game in town.</p>
+            </div>
 
 
-			<div id="console"></div>
+            <div id="console"></div>
 
-			<div id="question" class="well invisible">
-				<blockquote>
-					<p><code>CAP_NET_RAW</code> allows you to use RAW and PACKET sockets and bind to any address for transparent proxying.</p>
-				</blockquote>
+            <div id="question" class="invisible">
+                <blockquote>
+                    <p><code>CAP_NET_RAW</code> allows you to use RAW and PACKET sockets and bind to any address for transparent proxying.</p>
+                </blockquote>
 
-				<p class="lead content">Do you have access to <code>CAP_NET_RAW</code>?</p>
+                <p class="lead content">Do you have access to <code>CAP_NET_RAW</code>?</p>
 
                 <div id="warning" class="alert alert-warning hide" role="alert">
                     <strong>Not quite...</strong> Try running <code>ping</code> or <code>wget</code>.
                 </div>
 
                 <div id="correct" class="alert alert-success hide" role="alert">
-                    <strong>Congrats!</strong> You are correct.
+                    <p><strong>Congrats!</strong> You are correct.</p>
+                    <a id="next"><strong>Next Question</strong></a>
                 </div>
 
                 <p>
-                    <button id="yes" type="button" class="btn btn-secondary">Yes</button>
-                    <button id="no" type="button" class="btn btn-secondary">No</button>
+                <button id="yes" type="button" class="btn btn-secondary">Yes</button>
+                <button id="no" type="button" class="btn btn-secondary">No</button>
                 </p>
 
-                <input id="current" class="hide" />
-			</div>
+                <input id="current" type="hidden" value="0" />
+            </div>
 
-			<footer class="footer">
-				<div class="row">
-					<div class="col-md-5">
-						<p>There is a CTF on every VM instance. <b><em>If</em></b>&nbsp;
-						you manage to break out of the container, email
-						<a href="mailto:not.quite@contained.af">not.quite@contained.af</a>
-						and you will be rewarded. <br/>
-						<em>If</em>&nbsp; you bother this email address with anything
-						that is not the ascii art contents of the flag file you will be
-						ignored.</p>
-					</div>
-					<div class="col-md-2"></div>
-					<div class="col-md-5">
-						<p>Have an idea for a good question? Make a pull request
-to <a href="https://github.com/jfrazelle/contained.af" target="_blank">github.com/jfrazelle/contained.af</a>.</p>
-					</div>
-				</div>
-			</footer>
-		</div>
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-5">
+                        <p>There is a CTF on every VM instance. <b><em>If</em></b>&nbsp;
+                        you manage to break out of the container, email
+                        <a href="mailto:not.quite@contained.af">not.quite@contained.af</a>
+                        and you will be rewarded. <br/>
+                        <em>If</em>&nbsp; you bother this email address with anything
+                        that is not the ascii art contents of the flag file you will be
+                        ignored.</p>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <p>Have an idea for a good question? Make a pull request
+                        to <a href="https://github.com/jfrazelle/contained.af" target="_blank">github.com/jfrazelle/contained.af</a>.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
 
 
-		<script src="js/contained.min.js"></script>
-	</body>
+        <script src="js/contained.min.js"></script>
+    </body>
 </html>

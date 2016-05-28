@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -22,6 +23,7 @@ const (
 type handler struct {
 	dcli      *client.Client
 	dockerURL *url.URL
+	tlsConfig *tls.Config
 }
 
 type message struct {

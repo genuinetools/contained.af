@@ -1,4 +1,4 @@
-FROM node
+FROM mhart/alpine-node:latest
 
 RUN npm install --global \
 	clean-css \

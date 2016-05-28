@@ -81,7 +81,7 @@ func main() {
 	}
 
 	// setup client TLS
-	tlsConfig := &tls.Config{
+	tlsConfig := tls.Config{
 		// Prefer TLS1.2 as the client minimum
 		MinVersion: tls.VersionTLS12,
 		CipherSuites: []uint16{
@@ -101,7 +101,7 @@ func main() {
 
 	c := &http.Client{
 		Transport: &http.Transport{
-			TLSClientConfig: tlsConfig,
+			TLSClientConfig: &tlsConfig,
 		},
 	}
 
@@ -122,6 +122,7 @@ func main() {
 	h := &handler{
 		dcli:      dcli,
 		dockerURL: dockerURL,
+		tlsConfig: &tlsConfig,
 	}
 
 	// pull alpine image if we don't already have it

@@ -1,13 +1,12 @@
 ;(function() {
 	window.onload = function() {
 		var elem = document.getElementById('console');
-        var current_ques = 0;
 
 		function computedStyle(a,b,c,d){return c=window.getComputedStyle,d=c?c(a):a.currentStyle,d?d[b.replace(/-(\w)/gi,function(a,b){return b.toUpperCase()})]:void 0};
 
 		var dimensions = function() {
 			var el = document.createElement('div')
-				el.html = 'x'
+				el.innerHTML = 'x'
 				el.style.float = 'left'
 				el.style.position = 'absolute'
 				el.style.left = '-1000px'
@@ -43,20 +42,21 @@
         var loadQuestion = function(index) {
             $('#question').addClass('invisible');
             var q = questions[index];
-            var l = '<br/><a onclick="loadQuestion('+(index+1)+');"><strong>Next Question</strong></a>';
-            if (index == questions.length() - 1){
-                l = '<br/><strong>You completed all the questions!</strong>';
+
+            if (index == questions.length - 1){
+                $('#next').addClass('invisible');
             }
 
             $('#question blockquote p').html(q.description);
             $('#question .content').html(q.content);
-            $('#question #warning').html(q.warning);
-            $('#question #correct').html(q.success + l);
-            $('#question #current').val(index);
+            $('#question #correct').addClass('hide');
+            $('#question #warning').addClass('hide').html(q.warning);
+            $('#question #correct p').html(q.success);
+            $('#question #current').val(index + 1);
 
             $('#question blockquote').removeClass('invisible');
             $('#question .content').removeClass('invisible');
-            $('#question .button').removeClass('invisible');
+            $('#question .btn').removeClass('invisible');
 
             $('#question').removeClass('invisible');
         };
@@ -72,12 +72,12 @@
 
             $('#question blockquote').addClass('invisible');
             $('#question .content').addClass('invisible');
-            $('#question .button').addClass('invisible');
+            $('#question .btn').addClass('invisible');
         };
 
         $('#yes').click(function(){
             var index = $('#question #current').val();
-            if (questions[index].answer == true){
+            if (!questions[index].answer){
                 doCorrect();
             } else {
                 doWrong();
@@ -86,11 +86,18 @@
 
         $('#no').click(function(){
             var index = $('#question #current').val();
-            if (questions[index].answer == false){
+            if (questions[index].answer){
                 doCorrect();
             } else {
                 doWrong();
             }
+        });
+
+        $('#next').click(function(){
+            var index = $('#question #current').val();
+            index++;
+            $('#question #current').val(index);
+            loadQuestion(index);
         });
 
 		var proto = 'ws';
@@ -119,6 +126,7 @@
 
 		socket.onopen = function (event) {
 			windowSize(term, socket);
+            loadQuestion(0);
 		};
 
 		term.on('data', function(data) {

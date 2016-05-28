@@ -28,7 +28,7 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 	if err := json.Compact(b, []byte(seccompProfile)); err != nil {
 		return "", nil, fmt.Errorf("compacting json for seccomp profile failed: %v", err)
 	}
-	securityOpts = append(securityOpts, fmt.Sprintf("seccomp:%s", b.Bytes()))
+	securityOpts = append(securityOpts, fmt.Sprintf("seccomp=%s", b.Bytes()))
 
 	dropCaps := &strslice.StrSlice{"NET_RAW"}
 
@@ -66,8 +66,13 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 		"stderr": []string{"1"},
 		"stream": []string{"1"},
 	}
-	wsURL := fmt.Sprintf("ws://%s/%s/containers/%s/attach/ws?%s", h.dockerURL.Host, dockerAPIVersion, r.ID, v.Encode())
-	attachWS, err := websocket.Dial(wsURL, "", origin)
+	wsURL := fmt.Sprintf("wss://%s/%s/containers/%s/attach/ws?%s", h.dockerURL.Host, dockerAPIVersion, r.ID, v.Encode())
+	config, err := websocket.NewConfig(wsURL, origin)
+	if err != nil {
+		return "", nil, err
+	}
+	config.TlsConfig = h.tlsConfig
+	attachWS, err := websocket.DialConfig(config)
 	if err != nil {
 		return r.ID, nil, fmt.Errorf("dialing %s with origin %s failed: %v", wsURL, origin, err)
 	}
