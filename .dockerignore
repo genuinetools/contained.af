@@ -3,3 +3,4 @@
 Makefile
 Dockerfile
 Dockerfile.dind
+.certs

@@ -33,12 +33,21 @@ type message struct {
 
 // pingHander returns pong.
 func pingHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "pong")
 }
 
 // infoHander returns information about the connected docker daemon.
 func (h *handler) infoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	info, err := h.dcli.Info(context.Background())
 	if err != nil {
 		logrus.Errorf("getting docker info failed: %v", err)

@@ -38,6 +38,7 @@ vet:
 clean:
 	@echo "+ $@"
 	@rm -rf contained
+	@rm -rf $(CURDIR)/.certs
 
 dbuild:
 	docker build --rm --force-rm -t $(DOCKER_IMAGE) .
@@ -48,6 +49,7 @@ dind:
 		--name $(DIND_CONTAINER) \
 		--privileged \
 		-p 1234:10000 \
+		-v $(CURDIR)/.certs:/etc/docker/ssl \
 		$(DIND_DOCKER_IMAGE) \
 		docker daemon -D --storage-driver overlay \
 		-H tcp://127.0.0.1:2375 \
@@ -55,12 +57,20 @@ dind:
 		--disable-legacy-registry=true \
 		--userns-remap default \
 		--log-driver=none \
-		--exec-opt=native.cgroupdriver=cgroupfs
+		--exec-opt=native.cgroupdriver=cgroupfs \
+		--tlsverify \
+		--tlscacert=/etc/docker/ssl/cacert.pem \
+		--tlskey=/etc/docker/ssl/server.key \
+		--tlscert=/etc/docker/ssl/server.cert
 
 run: dbuild
 	docker run --rm -it \
+		-v $(CURDIR)/.certs:/etc/docker/ssl:ro \
 		--net container:$(DIND_CONTAINER) \
-		$(DOCKER_IMAGE) -d
+		$(DOCKER_IMAGE) -d \
+		--dcacert=/etc/docker/ssl/cacert.pem \
+		--dcert=/etc/docker/ssl/client.cert \
+		--dkey=/etc/docker/ssl/client.key
 
 devbuild:
 	docker build --rm --force-rm -f Dockerfile.dev -t $(DOCKER_IMAGE):dev .

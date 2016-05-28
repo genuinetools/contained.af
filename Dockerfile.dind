@@ -37,4 +37,7 @@ RUN wget "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/di
 
 EXPOSE 2375
 
-ENTRYPOINT ["dind"]
+COPY config /etc/docker/daemon/config
+WORKDIR /etc/docker/daemon/config
+
+ENTRYPOINT ["./setup_certs.sh"]
