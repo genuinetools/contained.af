@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
+	"net/http"
 	"net/url"
 
 	"github.com/Sirupsen/logrus"
@@ -26,6 +29,32 @@ type message struct {
 	Data   string `json:"data"`
 	Height int    `json:"height,omitempty"`
 	Width  int    `json:"width,omitempty"`
+}
+
+// pingHander returns pong.
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "pong")
+}
+
+// infoHander returns information about the connected docker daemon.
+func (h *handler) infoHandler(w http.ResponseWriter, r *http.Request) {
+	info, err := h.dcli.Info(context.Background())
+	if err != nil {
+		logrus.Errorf("getting docker info failed: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	b, err := json.MarshalIndent(info, "", "  ")
+	if err != nil {
+		logrus.Errorf("marshal indent info failed: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "%s", b)
 }
 
 func (h *handler) termServer(ws *websocket.Conn) {

@@ -94,6 +94,12 @@ func main() {
 	// websocket handler
 	http.Handle("/term", websocket.Handler(h.termServer))
 
+	// ping handler
+	http.HandleFunc("/ping", pingHandler)
+
+	// info handler
+	http.HandleFunc("/info", h.infoHandler)
+
 	// static files
 	http.Handle("/", http.FileServer(http.Dir(staticDir)))
 
