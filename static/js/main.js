@@ -77,7 +77,10 @@
 
         $('#yes').click(function(){
             var index = $('#question #current').val();
-            if (!questions[index].answer){
+            //console.log("index: ", index);
+            //console.log("question: ", questions[index]);
+            //console.log("answer: ", questions[index].answer);
+            if (questions[index].answer){
                 doCorrect();
             } else {
                 doWrong();
@@ -86,7 +89,10 @@
 
         $('#no').click(function(){
             var index = $('#question #current').val();
-            if (questions[index].answer){
+            //console.log("index: ", index);
+            //console.log("question: ", questions[index]);
+            //console.log("answer: ", questions[index].answer);
+            if (!questions[index].answer){
                 doCorrect();
             } else {
                 doWrong();
