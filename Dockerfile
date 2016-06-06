@@ -5,27 +5,21 @@ ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go
 ENV GO15VENDOREXPERIMENT 1
 
-RUN	apk update && apk add \
-	ca-certificates \
-	&& rm -rf /var/cache/apk/*
+RUN apk --no-cache add ca-certificates
 
 COPY *.go /go/src/github.com/jfrazelle/contained/
 COPY vendor /go/src/github.com/jfrazelle/contained/vendor
 
-RUN buildDeps=' \
+RUN set -x \
+	&& apk --no-cache add --virtual build-dependencies \
 		go \
 		git \
 		gcc \
 		libc-dev \
 		libgcc \
-	' \
-	set -x \
-	&& apk update \
-	&& apk add $buildDeps \
 	&& cd /go/src/github.com/jfrazelle/contained \
 	&& go build -o /usr/bin/contained . \
-	&& apk del $buildDeps \
-	&& rm -rf /var/cache/apk/* \
+	&& apk del build-dependencies \
 	&& rm -rf /go \
 	&& echo "Build complete."
 
