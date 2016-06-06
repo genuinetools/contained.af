@@ -78,7 +78,7 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 	}
 
 	// start the container
-	if err := h.dcli.ContainerStart(context.Background(), r.ID, ""); err != nil {
+	if err := h.dcli.ContainerStart(context.Background(), r.ID, types.ContainerStartOptions{}); err != nil {
 		return r.ID, attachWS, err
 	}
 
