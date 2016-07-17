@@ -19,5 +19,13 @@ var questions = [
         warning: "<strong>Not quite...</strong> Try running <code>sleep</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
         answer: true
+    },
+    {
+        description: "<code>CAP_SYS_ADMIN</code> syscall allows you to do all kinds of things. Override resource limits! Call <code>perf_event_open</code>! See <a href='http://man7.org/linux/man-pages/man7/capabilities.7.html'>the capabilities man page</a> for the full list",
+        content: "Do you have access to <code>CAP_SYS_ADMIN</code>?",
+        warning: "<strong>Not quite...</strong> Try mounting a tmpfs with <code>mount</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        answer: false
     }
+    
 ];
