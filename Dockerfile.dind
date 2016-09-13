@@ -3,6 +3,7 @@ FROM alpine:3.3
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apk add --no-cache \
 	btrfs-progs \
+	ca-certificates \
 	curl \
 	e2fsprogs \
 	e2fsprogs-extra \
