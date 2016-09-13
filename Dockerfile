@@ -1,6 +1,9 @@
 FROM alpine
 MAINTAINER Jessica Frazelle <jess@docker.com>
 
+RUN apt add --no-cache \
+	ca-certificates
+
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go
 ENV GO15VENDOREXPERIMENT 1
