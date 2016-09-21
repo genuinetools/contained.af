@@ -22,5 +22,7 @@ RUN set -x \
 	&& rm -rf /go \
 	&& echo "Build complete."
 
+COPY static /usr/src/contained/
+WORKDIR /usr/src/contained
 
 ENTRYPOINT [ "contained" ]
