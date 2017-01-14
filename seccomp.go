@@ -10,6 +10,11 @@ const (
 			"args": []
 		},
 		{
+			"name": "mprotect",
+			"action": "SCMP_ACT_ALLOW",
+			"args": []
+		},
+		{
 			"name": "brk",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
