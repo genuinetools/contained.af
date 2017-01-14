@@ -89,6 +89,7 @@ const (
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
 		},
+		{
 			"name": "eventfd",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
