@@ -5,26 +5,6 @@ const (
 	"defaultAction": "SCMP_ACT_ERRNO",
 	"syscalls": [
 		{
-			"name": "accept",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "accept4",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "access",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "alarm",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "bind",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -109,32 +89,6 @@ const (
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
 		},
-		{
-			"name": "epoll_ctl",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "epoll_ctl_old",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "epoll_pwait",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "epoll_wait",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "epoll_wait_old",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "eventfd",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -480,26 +434,6 @@ const (
 			"args": []
 		},
 		{
-			"name": "inotify_add_watch",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "inotify_init",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "inotify_init1",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "inotify_rm_watch",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "io_cancel",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -610,21 +544,6 @@ const (
 			"args": []
 		},
 		{
-			"name": "madvise",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "memfd_create",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mincore",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "mkdir",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
@@ -651,91 +570,6 @@ const (
 		},
 		{
 			"name": "mmap2",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mprotect",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_getsetattr",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_notify",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_open",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_timedreceive",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_timedsend",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mq_unlink",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "mremap",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "msgctl",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "msgget",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "msgrcv",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "msgsnd",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "msync",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "munlock",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "munlockall",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "munmap",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "newfstatat",
 			"action": "SCMP_ACT_ALLOW",
 			"args": []
 		},
@@ -1511,21 +1345,6 @@ const (
 			"args": []
 		},
 		{
-			"name": "fchownat",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "lchown",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
-			"name": "lchown32",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
-		},
-		{
 			"name": "clone",
 			"action": "SCMP_ACT_ALLOW",
 			"args": [
@@ -1536,11 +1355,6 @@ const (
 					"op": "SCMP_CMP_MASKED_EQ"
 				}
 			]
-		},
-		{
-			"name": "fchown",
-			"action": "SCMP_ACT_ALLOW",
-			"args": []
 		}
 	]
 }`
