@@ -1,5 +1,5 @@
 FROM mhart/alpine-node:latest
 
 RUN npm install --global \
-	clean-css \
+	clean-css-cli \
 	uglify-js
