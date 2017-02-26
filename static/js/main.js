@@ -25,20 +25,13 @@
 		};
 
 		var windowSize = function(term, socket) {
-			var wid = get('width'),
-				hei = get('height');
-
-			term.resize(wid, hei);
+			term.fit();
 			socket.send(JSON.stringify({
 				type: 'resize',
-				width: wid,
-				height: hei
+				width: term.cols,
+				height: term.rows
 			}));
-
-			//console.log("width", wid);
-			//console.log("height", hei);
 		};
-
         var loadQuestion = function(index) {
             $('#question').addClass('invisible');
             var q = questions[index];
@@ -112,14 +105,8 @@
 
 		// create the socket
 		var socket = new WebSocket(proto+'://'+location.host+"/term");
-		var wid = get('width'),
-			hei = get('height');
 
 		var term = new Terminal({
-			columns: wid,
-			rows: hei,
-			useStyle: true,
-			screenKeys: true,
 			cursorBlink: true
 		});
 

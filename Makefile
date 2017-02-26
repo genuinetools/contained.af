@@ -85,7 +85,8 @@ static/js/contained.min.js: devbuild
 		--workdir /usr/src/contained.af \
 		$(DOCKER_IMAGE):dev \
 		uglifyjs --output $@ --compress --mangle -- \
-			static/js/term.js \
+			static/js/xterm.js \
+			static/js/fit.js \
 			static/js/jquery-2.2.4.min.js \
 			static/js/questions.js \
 			static/js/main.js
@@ -95,6 +96,6 @@ static/css/contained.min.css: devbuild
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
 		$(DOCKER_IMAGE):dev \
-		sh -c 'cat static/css/normalize.css static/css/bootstrap.min.css static/css/custom.css | cleancss -o $@'
+		sh -c 'cat static/css/normalize.css static/css/bootstrap.min.css static/css/xterm.css static/css/custom.css | cleancss -o $@'
 
 dev: static/js/contained.min.js static/css/contained.min.css
