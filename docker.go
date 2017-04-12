@@ -52,6 +52,9 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 			LogConfig: container.LogConfig{
 				Type: "none",
 			},
+			Resources: container.Resources{
+				PidsLimit: 5,
+			},
 		},
 		nil, "")
 	if err != nil {
