@@ -21,11 +21,18 @@ var questions = [
         answer: true
     },
     {
+        description: "AppArmor is a Linux security module that allows for setting permissions and auditing processes.",
+        content: "Is the container running with an apparmor profile?",
+        warning: "<strong>Not quite...</strong> See profiles by running <code>cat /proc/self/attr/current</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        answer: false
+    },
+    {
         description: "<code>CAP_SYS_ADMIN</code> syscall allows you to do all kinds of things. Override resource limits! Call <code>perf_event_open</code>! See <a href='http://man7.org/linux/man-pages/man7/capabilities.7.html'>the capabilities man page</a> for the full list",
         content: "Do you have access to <code>CAP_SYS_ADMIN</code>?",
         warning: "<strong>Not quite...</strong> Try mounting a tmpfs with <code>mount</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
         answer: false
     }
-    
+
 ];
