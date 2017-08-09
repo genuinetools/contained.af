@@ -104,6 +104,10 @@ func (h *handler) websocketHandler(w http.ResponseWriter, r *http.Request) {
 					if err := h.removeContainer(cid); err != nil {
 						logrus.Errorf("removing container %s failed: %v", cid, err)
 					}
+					// cleanly close the browser connection
+					if err := conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "")); err != nil {
+						logrus.Errorf("closing broswer websocket failed: %v", cid, err)
+					}
 					break
 				}
 				if err == io.EOF {
