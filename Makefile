@@ -8,7 +8,6 @@ DIND_CONTAINER=contained-dind
 DIND_DOCKER_IMAGE=r.j3ss.co/docker:userns
 DOCKER_IMAGE=r.j3ss.co/contained
 
-
 all: clean build fmt lint test vet
 
 build:
@@ -43,16 +42,18 @@ clean:
 dbuild:
 	docker build --rm --force-rm -t $(DOCKER_IMAGE) .
 
+# set the graph driver as the current graphdriver if not set
+DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
 dind:
 	docker build --rm --force-rm -f Dockerfile.dind -t $(DIND_DOCKER_IMAGE) .
 	docker run -d  \
 		--tmpfs /var/lib/docker \
 		--name $(DIND_CONTAINER) \
 		--privileged \
-		-p 1234:10000 \
+		-p 10000:10000 \
 		-v $(CURDIR)/.certs:/etc/docker/ssl \
 		$(DIND_DOCKER_IMAGE) \
-		docker daemon -D --storage-driver overlay \
+		dockerd -D --storage-driver $(DOCKER_GRAPHDRIVER) \
 		-H tcp://127.0.0.1:2375 \
 		--host=unix:///var/run/docker.sock \
 		--disable-legacy-registry=true \

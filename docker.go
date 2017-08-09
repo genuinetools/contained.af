@@ -2,20 +2,21 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/url"
 	"os"
 
-	"github.com/Sirupsen/logrus"
-	"github.com/docker/docker/pkg/jsonmessage"
-	"github.com/docker/docker/pkg/term"
-	"github.com/docker/engine-api/client"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/container"
-	"github.com/docker/engine-api/types/strslice"
-	"golang.org/x/net/context"
-	"golang.org/x/net/websocket"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/strslice"
+	"github.com/gorilla/websocket"
+	"github.com/moby/moby/client"
+	"github.com/moby/moby/pkg/jsonmessage"
+	"github.com/moby/moby/pkg/term"
+	"github.com/sirupsen/logrus"
 )
 
 // startContainer starts a docker container and returns the container ID
@@ -62,7 +63,8 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 	}
 
 	// connect to the attach websocket endpoint
-	origin := h.dockerURL.String()
+	header := http.Header(make(map[string][]string))
+	header.Add("Origin", h.dockerURL.String())
 	v := url.Values{
 		"stdin":  []string{"1"},
 		"stdout": []string{"1"},
@@ -70,22 +72,21 @@ func (h *handler) startContainer() (string, *websocket.Conn, error) {
 		"stream": []string{"1"},
 	}
 	wsURL := fmt.Sprintf("wss://%s/%s/containers/%s/attach/ws?%s", h.dockerURL.Host, dockerAPIVersion, r.ID, v.Encode())
-	config, err := websocket.NewConfig(wsURL, origin)
-	if err != nil {
-		return "", nil, err
+	var dialer = &websocket.Dialer{
+		Proxy:           http.ProxyFromEnvironment,
+		TLSClientConfig: h.tlsConfig,
 	}
-	config.TlsConfig = h.tlsConfig
-	attachWS, err := websocket.DialConfig(config)
+	conn, _, err := dialer.Dial(wsURL, header)
 	if err != nil {
-		return r.ID, nil, fmt.Errorf("dialing %s with origin %s failed: %v", wsURL, origin, err)
+		return r.ID, nil, fmt.Errorf("dialing %s with header %#v failed: %v", wsURL, header, err)
 	}
 
 	// start the container
 	if err := h.dcli.ContainerStart(context.Background(), r.ID, types.ContainerStartOptions{}); err != nil {
-		return r.ID, attachWS, err
+		return r.ID, conn, err
 	}
 
-	return r.ID, attachWS, nil
+	return r.ID, conn, nil
 }
 
 // removeContainer removes with force a container by it's container ID.
@@ -126,7 +127,7 @@ func (h *handler) pullImage(image string) error {
 
 // imageExists checks if a docker image exists.
 func (h *handler) imageExists(image string) (bool, error) {
-	_, _, err := h.dcli.ImageInspectWithRaw(context.Background(), image, false)
+	_, _, err := h.dcli.ImageInspectWithRaw(context.Background(), image)
 	if err == nil {
 		return true, nil
 	}

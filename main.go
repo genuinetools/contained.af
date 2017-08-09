@@ -10,10 +10,8 @@ import (
 	"net/url"
 	"os"
 
-	"golang.org/x/net/websocket"
-
-	"github.com/Sirupsen/logrus"
-	"github.com/docker/engine-api/client"
+	"github.com/moby/moby/client"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -131,7 +129,7 @@ func main() {
 	}
 
 	// websocket handler
-	http.Handle("/term", websocket.Handler(h.termServer))
+	http.HandleFunc("/term", h.websocketHandler)
 
 	// ping handler
 	http.HandleFunc("/ping", pingHandler)

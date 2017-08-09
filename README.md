@@ -33,4 +33,4 @@ Build and run the server with:
 make run
 ```
 
-After a few moments, contained will be available at http://localhost:1234/.
+After a few moments, contained will be available at http://localhost:10000/.
