@@ -106,7 +106,7 @@ func (h *handler) websocketHandler(w http.ResponseWriter, r *http.Request) {
 					}
 					// cleanly close the browser connection
 					if err := conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "")); err != nil {
-						logrus.Errorf("closing broswer websocket failed: %v", cid, err)
+						logrus.Errorf("closing broswer websocket failed: %v", err)
 					}
 					break
 				}
