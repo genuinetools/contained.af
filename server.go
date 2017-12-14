@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	dockerAPIVersion = "v1.23"
+	dockerAPIVersion = "v1.35"
 )
 
 var upgrader = websocket.Upgrader{
