@@ -55,10 +55,13 @@ if [ ! -f  "${CERT_DIR}/cacert.pem" ]; then
 
 	openssl x509 -noout -text -in "${CERT_DIR}/client.cert"
 
-
 	# remove the signing requests
 	rm -rf "${CERT_DIR}/client.csr" "${CERT_DIR}/server.csr" "${CERT_DIR}/"*.attr "${CERT_DIR}/"*.old
 
+	# copy the certs and keys to places where they can be auto picked up by the docker daemon
+	cp "${CERT_DIR}/cacert.pem" "${CERT_DIR}/ca.pem"
+	cp "${CERT_DIR}/server.cert" "${CERT_DIR}/cert.pem"
+	cp "${CERT_DIR}/server.key" "${CERT_DIR}/key.pem"
 fi
 
 if [ "$1" = 'dockerd' ]; then

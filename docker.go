@@ -12,10 +12,10 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/strslice"
+	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/pkg/term"
 	"github.com/gorilla/websocket"
-	"github.com/moby/moby/client"
-	"github.com/moby/moby/pkg/jsonmessage"
-	"github.com/moby/moby/pkg/term"
 	"github.com/sirupsen/logrus"
 )
 
@@ -132,7 +132,7 @@ func (h *handler) imageExists(image string) (bool, error) {
 		return true, nil
 	}
 
-	if client.IsErrImageNotFound(err) {
+	if client.IsErrNotFound(err) {
 		return false, nil
 	}
 

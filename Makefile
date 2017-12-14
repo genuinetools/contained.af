@@ -1,50 +1,67 @@
 # Set an output prefix, which is the local directory if not specified
 PREFIX?=$(shell pwd)
-BUILDTAGS=
 
-.PHONY: clean all dbuild dev devbuild run fmt vet lint build test install static
+# Setup name variables for the package/tool
+NAME := contained
+PKG := github.com/jessfraz/$(NAME)
 
-DIND_CONTAINER=contained-dind
+DIND_CONTAINER=$(NAME)-dind
 DIND_DOCKER_IMAGE=r.j3ss.co/docker:userns
-DOCKER_IMAGE=r.j3ss.co/contained
+DOCKER_IMAGE=r.j3ss.co/$(NAME)
 
-all: clean build fmt lint test vet
+# Set any default go build tags
+BUILDTAGS :=
 
-build:
+all: clean build fmt lint test staticcheck vet install ## Runs a clean, build, fmt, lint, test, staticcheck, vet and install
+
+.PHONY: build
+build: $(NAME) ## Builds a dynamic executable or package
+
+$(NAME): *.go
 	@echo "+ $@"
-	@go build -tags "$(BUILDTAGS) cgo" -o contained .
+	go build -tags "$(BUILDTAGS)" -o $(NAME) .
 
-static:
+.PHONY: static
+static: ## Builds a static executable
 	@echo "+ $@"
-	CGO_ENABLED=1 go build -tags "$(BUILDTAGS) cgo static_build" -ldflags "-w -extldflags -static" -o contained .
+	CGO_ENABLED=0 go build \
+				-tags "$(BUILDTAGS) static_build" \
+				-o $(NAME) .
 
-fmt:
+.PHONY: fmt
+fmt: ## Verifies all files have men `gofmt`ed
 	@echo "+ $@"
-	@gofmt -s -l . | grep -v vendor | tee /dev/stderr
+	@gofmt -s -l . | grep -v '.pb.go:' | grep -v vendor | tee /dev/stderr
 
-lint:
+.PHONY: lint
+lint: ## Verifies `golint` passes
 	@echo "+ $@"
-	@golint ./... | grep -v vendor | tee /dev/stderr
+	@golint ./... | grep -v '.pb.go:' | grep -v vendor | tee /dev/stderr
 
-test: fmt lint vet
+.PHONY: test
+test: ## Runs the go tests
 	@echo "+ $@"
 	@go test -v -tags "$(BUILDTAGS) cgo" $(shell go list ./... | grep -v vendor)
 
-vet:
+.PHONY: vet
+vet: ## Verifies `go vet` passes
 	@echo "+ $@"
-	@go vet $(shell go list ./... | grep -v vendor)
+	@go vet $(shell go list ./... | grep -v vendor) | grep -v '.pb.go:' | tee /dev/stderr
 
-clean:
+.PHONY: staticcheck
+staticcheck: ## Verifies `staticcheck` passes
 	@echo "+ $@"
-	@rm -rf contained
-	@rm -rf $(CURDIR)/.certs
+	@staticcheck $(shell go list ./... | grep -v vendor) | grep -v '.pb.go:' | tee /dev/stderr
 
-dbuild:
-	docker build --rm --force-rm -t $(DOCKER_IMAGE) .
+.PHONY: install
+install: ## Installs the executable or package
+	@echo "+ $@"
+	@go install .
 
 # set the graph driver as the current graphdriver if not set
 DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
-dind:
+.PHONY: dind
+dind: ## Starts a docker-in-docker container to be used with a local server
 	docker build --rm --force-rm -f Dockerfile.dind -t $(DIND_DOCKER_IMAGE) .
 	docker run -d  \
 		--tmpfs /var/lib/docker \
@@ -68,7 +85,12 @@ dind:
 		--tlskey=/etc/docker/ssl/server.key \
 		--tlscert=/etc/docker/ssl/server.cert
 
-run: dbuild
+.PHONY: dbuild
+dbuild:
+	docker build --rm --force-rm -t $(DOCKER_IMAGE) .
+
+.PHONY: run
+run: dbuild ## Run the server locally in a docker container
 	docker run --rm -it \
 		-v $(CURDIR)/.certs:/etc/docker/ssl:ro \
 		--net container:$(DIND_CONTAINER) \
@@ -77,6 +99,7 @@ run: dbuild
 		--dcert=/etc/docker/ssl/client.cert \
 		--dkey=/etc/docker/ssl/client.key
 
+.PHONY: devbuild
 devbuild:
 	docker build --rm --force-rm -f Dockerfile.dev -t $(DOCKER_IMAGE):dev .
 
@@ -99,4 +122,15 @@ static/css/contained.min.css: devbuild
 		$(DOCKER_IMAGE):dev \
 		sh -c 'cat static/css/normalize.css static/css/bootstrap.min.css static/css/xterm.css static/css/custom.css | cleancss -o $@'
 
-dev: static/js/contained.min.js static/css/contained.min.css
+.PHONY: dev
+dev: static/js/contained.min.js static/css/contained.min.css ## Build the static components
+
+.PHONY: clean
+clean: ## Cleanup any build binaries or packages
+	@echo "+ $@"
+	$(RM) $(NAME)
+	$(RM) -r $(CURDIR)/.certs
+
+.PHONY: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
