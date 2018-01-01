@@ -31,5 +31,5 @@ COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs
 COPY frontend /usr/src/contained.af/
 WORKDIR /usr/src/contained.af
 
-ENTRYPOINT [ "/usr/bin/contained.af" ]
+ENTRYPOINT [ "contained.af" ]
 CMD [ "--help" ]
