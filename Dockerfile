@@ -7,7 +7,7 @@ ENV GOPATH /go
 RUN	apk add --no-cache \
 	ca-certificates
 
-COPY . /go/src/github.com/jessfraz/contained
+COPY . /go/src/github.com/jessfraz/contained.af
 
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
@@ -16,21 +16,20 @@ RUN set -x \
 		libc-dev \
 		libgcc \
 		make \
-	&& cd /go/src/github.com/jessfraz/contained \
+	&& cd /go/src/github.com/jessfraz/contained.af \
 	&& make static \
-	&& mv contained /usr/bin/contained \
-	&& ldd /usr/bin/contained \
+	&& mv contained.af /usr/bin/contained.af \
 	&& apk del .build-deps \
 	&& rm -rf /go \
 	&& echo "Build complete."
 
 FROM scratch
 
-COPY --from=builder /usr/bin/contained /usr/bin/contained
+COPY --from=builder /usr/bin/contained.af /usr/bin/contained.af
 COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs
 
-COPY frontend /usr/src/contained/
-WORKDIR /usr/src/contained
+COPY frontend /usr/src/contained.af/
+WORKDIR /usr/src/contained.af
 
-ENTRYPOINT [ "/usr/bin/contained" ]
+ENTRYPOINT [ "/usr/bin/contained.af" ]
 CMD [ "--help" ]

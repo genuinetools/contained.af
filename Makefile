@@ -2,7 +2,7 @@
 PREFIX?=$(shell pwd)
 
 # Setup name variables for the package/tool
-NAME := $(shell basename $(CURDIR))
+NAME := contained.af
 PKG := github.com/jessfraz/$(NAME)
 
 DIND_CONTAINER=$(NAME)-dind
