@@ -12,21 +12,39 @@ DOCKER_IMAGE=r.j3ss.co/$(NAME)
 # Set any default go build tags
 BUILDTAGS :=
 
+# Set the build dir, where built cross-compiled binaries will be output
+BUILDDIR := ${PREFIX}/cross
+
+# Populate version variables
+# Add to compile time flags
+VERSION := $(shell cat VERSION)
+GITCOMMIT := $(shell git rev-parse --short HEAD)
+GITUNTRACKEDCHANGES := $(shell git status --porcelain --untracked-files=no)
+ifneq ($(GITUNTRACKEDCHANGES),)
+	GITCOMMIT := $(GITCOMMIT)-dirty
+endif
+CTIMEVAR=-X $(PKG)/version.GITCOMMIT=$(GITCOMMIT) -X $(PKG)/version.VERSION=$(VERSION)
+GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
+GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
+
+# List the GOOS and GOARCH to build
+GOOSARCHES = darwin/amd64 darwin/386 freebsd/amd64 freebsd/386 linux/arm linux/arm64 linux/amd64 linux/386 solaris/amd64 windows/amd64 windows/386
+
 all: clean build fmt lint test staticcheck vet install ## Runs a clean, build, fmt, lint, test, staticcheck, vet and install
 
 .PHONY: build
 build: $(NAME) ## Builds a dynamic executable or package
 
-$(NAME): *.go
+$(NAME): *.go VERSION
 	@echo "+ $@"
-	go build -tags "$(BUILDTAGS)" -o $(NAME) .
+	go build -tags "$(BUILDTAGS)" ${GO_LDFLAGS} -o $(NAME) .
 
 .PHONY: static
 static: ## Builds a static executable
 	@echo "+ $@"
 	CGO_ENABLED=0 go build \
 				-tags "$(BUILDTAGS) static_build" \
-				-o $(NAME) .
+				${GO_LDFLAGS_STATIC} -o $(NAME) .
 
 .PHONY: fmt
 fmt: ## Verifies all files have men `gofmt`ed
