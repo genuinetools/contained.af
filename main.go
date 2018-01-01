@@ -53,7 +53,7 @@ func init() {
 	flag.StringVar(&dockerCert, "dcert", "", "path to TLS certificate file for docker host")
 	flag.StringVar(&dockerKey, "dkey", "", "path to TLS key file for docker host")
 
-	flag.StringVar(&staticDir, "static", defaultStaticDir, "directory that holds the static files")
+	flag.StringVar(&staticDir, "frontend", defaultStaticDir, "directory that holds the static frontend files")
 	flag.StringVar(&port, "port", "10000", "port for server")
 
 	flag.BoolVar(&vrsn, "version", false, "print version and exit")

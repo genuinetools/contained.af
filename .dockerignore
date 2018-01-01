@@ -4,3 +4,6 @@ Makefile
 Dockerfile
 Dockerfile.dind
 .certs
+contained
+contained.af
+cross

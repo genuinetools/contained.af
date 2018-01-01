@@ -167,27 +167,27 @@ run: dbuild ## Run the server locally in a docker container
 devbuild:
 	docker build --rm --force-rm -f Dockerfile.dev -t $(DOCKER_IMAGE):dev .
 
-static/js/contained.min.js: devbuild
+frontend/js/contained.min.js: devbuild
 	docker run --rm -it \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
 		$(DOCKER_IMAGE):dev \
 		uglifyjs --output $@ --compress --mangle -- \
-			static/js/xterm.js \
-			static/js/fit.js \
-			static/js/jquery-2.2.4.min.js \
-			static/js/questions.js \
-			static/js/main.js
+			frontend/js/xterm.js \
+			frontend/js/fit.js \
+			frontend/js/jquery-2.2.4.min.js \
+			frontend/js/questions.js \
+			frontend/js/main.js
 
-static/css/contained.min.css: devbuild
+frontend/css/contained.min.css: devbuild
 	docker run --rm -it \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
 		$(DOCKER_IMAGE):dev \
-		sh -c 'cat static/css/normalize.css static/css/bootstrap.min.css static/css/xterm.css static/css/custom.css | cleancss -o $@'
+		sh -c 'cat frontend/css/normalize.css frontend/css/bootstrap.min.css frontend/css/xterm.css frontend/css/custom.css | cleancss -o $@'
 
 .PHONY: dev
-dev: static/js/contained.min.js static/css/contained.min.css ## Build the static components
+dev: frontend/js/contained.min.js frontend/css/contained.min.css ## Build the frontend components
 
 .PHONY: clean
 clean: ## Cleanup any build binaries or packages

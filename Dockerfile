@@ -19,6 +19,7 @@ RUN set -x \
 	&& cd /go/src/github.com/jessfraz/contained \
 	&& make static \
 	&& mv contained /usr/bin/contained \
+	&& ldd /usr/bin/contained \
 	&& apk del .build-deps \
 	&& rm -rf /go \
 	&& echo "Build complete."
@@ -28,8 +29,8 @@ FROM scratch
 COPY --from=builder /usr/bin/contained /usr/bin/contained
 COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs
 
-COPY static /usr/src/contained/
+COPY frontend /usr/src/contained/
 WORKDIR /usr/src/contained
 
-ENTRYPOINT [ "contained" ]
+ENTRYPOINT [ "/usr/bin/contained" ]
 CMD [ "--help" ]

@@ -4,18 +4,18 @@
 
 A game for learning about containers, capabilities, and syscalls.
 
-To add a question edit this file: [static/js/questions.js](static/js/questions.js).
+To add a question edit this file: [frontend/js/questions.js](frontend/js/questions.js).
 
 ## Run contained.af locally
 
 Contained is made of a few components:
 
-  * A static HTML and JavaScript frontend in `static/`
+  * A static HTML and JavaScript frontend in `frontend/`
   * A Go web server in the project root
   * An isolated Docker installation, running inside a Docker container
     ("Docker-in-Docker").
 
-Prepare the static assets with:
+Prepare the static frontend assets with:
 
 ```
 make dev
