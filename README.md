@@ -1,8 +1,8 @@
 # contained.af
 
-A stupid game for learning about capabilities and syscalls, WIP.
-
 [![Travis CI](https://travis-ci.org/jessfraz/contained.af.svg?branch=master)](https://travis-ci.org/jessfraz/contained.af)
+
+A game for learning about containers, capabilities, and syscalls.
 
 To add a question edit this file: [static/js/questions.js](static/js/questions.js).
 

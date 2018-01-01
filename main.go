@@ -11,17 +11,23 @@ import (
 	"os"
 
 	"github.com/docker/docker/client"
+	"github.com/jessfraz/contained/version"
 	"github.com/sirupsen/logrus"
 )
 
 const (
 	// BANNER is what is printed for help/info output
-	BANNER = `contained
- Version: %s
-`
-	// VERSION is the binary version.
-	VERSION = "v0.1.0"
+	BANNER = `                 _        _                _
+  ___ ___  _ __ | |_ __ _(_)_ __   ___  __| |
+ / __/ _ \| '_ \| __/ _` + "`" + ` | | '_ \ / _ \/ _` + "" + ` |
+| (_| (_) | | | | || (_| | | | | |  __/ (_| |
+ \___\___/|_| |_|\__\__,_|_|_| |_|\___|\__,_|
 
+ A game for learning about containers, capabilities, and syscalls.
+ Version: %s
+ Build: %s
+
+`
 	defaultStaticDir   = "/usr/src/contained"
 	defaultDockerHost  = "http://127.0.0.1:2375"
 	defaultDockerImage = "alpine:latest"
@@ -36,8 +42,8 @@ var (
 	staticDir string
 	port      string
 
-	debug   bool
-	version bool
+	debug bool
+	vrsn  bool
 )
 
 func init() {
@@ -50,19 +56,19 @@ func init() {
 	flag.StringVar(&staticDir, "static", defaultStaticDir, "directory that holds the static files")
 	flag.StringVar(&port, "port", "10000", "port for server")
 
-	flag.BoolVar(&version, "version", false, "print version and exit")
-	flag.BoolVar(&version, "v", false, "print version and exit (shorthand)")
+	flag.BoolVar(&vrsn, "version", false, "print version and exit")
+	flag.BoolVar(&vrsn, "v", false, "print version and exit (shorthand)")
 	flag.BoolVar(&debug, "d", false, "run in debug mode")
 
 	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, VERSION))
+		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, version.VERSION, version.GITCOMMIT))
 		flag.PrintDefaults()
 	}
 
 	flag.Parse()
 
-	if version {
-		fmt.Printf("%s", VERSION)
+	if vrsn {
+		fmt.Printf("contained version %s, build %s", version.VERSION, version.GITCOMMIT)
 		os.Exit(0)
 	}
 
