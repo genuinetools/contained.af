@@ -11,7 +11,7 @@ import (
 	"os"
 
 	"github.com/docker/docker/client"
-	"github.com/jessfraz/contained/version"
+	"github.com/jessfraz/contained.af/version"
 	"github.com/sirupsen/logrus"
 )
 

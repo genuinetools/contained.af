@@ -2,7 +2,7 @@
 PREFIX?=$(shell pwd)
 
 # Setup name variables for the package/tool
-NAME := contained
+NAME := $(shell basename $(CURDIR))
 PKG := github.com/jessfraz/$(NAME)
 
 DIND_CONTAINER=$(NAME)-dind
@@ -28,7 +28,7 @@ GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 
 # List the GOOS and GOARCH to build
-GOOSARCHES = darwin/amd64 darwin/386 freebsd/amd64 freebsd/386 linux/arm linux/arm64 linux/amd64 linux/386 solaris/amd64 windows/amd64 windows/386
+GOOSARCHES = linux/amd64
 
 all: clean build fmt lint test staticcheck vet install ## Runs a clean, build, fmt, lint, test, staticcheck, vet and install
 
@@ -74,7 +74,54 @@ staticcheck: ## Verifies `staticcheck` passes
 .PHONY: install
 install: ## Installs the executable or package
 	@echo "+ $@"
-	@go install .
+	go install -a -tags "$(BUILDTAGS)" ${GO_LDFLAGS} .
+
+define buildpretty
+mkdir -p $(BUILDDIR)/$(1)/$(2);
+GOOS=$(1) GOARCH=$(2) CGO_ENABLED=0 go build \
+	 -o $(BUILDDIR)/$(1)/$(2)/$(NAME) \
+	 -a -tags "$(BUILDTAGS) static_build netgo" \
+	 -installsuffix netgo ${GO_LDFLAGS_STATIC} .;
+md5sum $(BUILDDIR)/$(1)/$(2)/$(NAME) > $(BUILDDIR)/$(1)/$(2)/$(NAME).md5;
+sha256sum $(BUILDDIR)/$(1)/$(2)/$(NAME) > $(BUILDDIR)/$(1)/$(2)/$(NAME).sha256;
+endef
+
+.PHONY: cross
+cross: *.go VERSION ## Builds the cross-compiled binaries, creating a clean directory structure (eg. GOOS/GOARCH/binary)
+	@echo "+ $@"
+	$(foreach GOOSARCH,$(GOOSARCHES), $(call buildpretty,$(subst /,,$(dir $(GOOSARCH))),$(notdir $(GOOSARCH))))
+
+define buildrelease
+GOOS=$(1) GOARCH=$(2) CGO_ENABLED=0 go build \
+	 -o $(BUILDDIR)/$(NAME)-$(1)-$(2) \
+	 -a -tags "$(BUILDTAGS) static_build netgo" \
+	 -installsuffix netgo ${GO_LDFLAGS_STATIC} .;
+md5sum $(BUILDDIR)/$(NAME)-$(1)-$(2) > $(BUILDDIR)/$(NAME)-$(1)-$(2).md5;
+sha256sum $(BUILDDIR)/$(NAME)-$(1)-$(2) > $(BUILDDIR)/$(NAME)-$(1)-$(2).sha256;
+endef
+
+.PHONY: release
+release: *.go VERSION ## Builds the cross-compiled binaries, naming them in such a way for release (eg. binary-GOOS-GOARCH)
+	@echo "+ $@"
+	$(foreach GOOSARCH,$(GOOSARCHES), $(call buildrelease,$(subst /,,$(dir $(GOOSARCH))),$(notdir $(GOOSARCH))))
+
+.PHONY: bump-version
+BUMP := patch
+bump-version: ## Bump the version in the version file. Set BUMP to [ patch | major | minor ]
+	@go get -u github.com/jessfraz/junk/sembump # update sembump tool
+	$(eval NEW_VERSION = $(shell sembump --kind $(BUMP) $(VERSION)))
+	@echo "Bumping VERSION from $(VERSION) to $(NEW_VERSION)"
+	echo $(NEW_VERSION) > VERSION
+	@echo "Updating links to download binaries in README.md"
+	sed -i s/$(VERSION)/$(NEW_VERSION)/g README.md
+	git add VERSION README.md
+	git commit -vsam "Bump version to $(NEW_VERSION)"
+	@echo "Run make tag to create and push the tag for new version $(NEW_VERSION)"
+
+.PHONY: tag
+tag: ## Create a new git tag to prepare to build a release
+	git tag -sa $(VERSION) -m "$(VERSION)"
+	@echo "Run git push origin $(VERSION) to push your new tag to GitHub and trigger a travis build."
 
 # set the graph driver as the current graphdriver if not set
 DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
@@ -91,7 +138,6 @@ dind: ## Starts a docker-in-docker container to be used with a local server
 		dockerd -D --storage-driver $(DOCKER_GRAPHDRIVER) \
 		-H tcp://127.0.0.1:2375 \
 		--host=unix:///var/run/docker.sock \
-		--disable-legacy-registry=true \
 		--userns-remap default \
 		--log-driver=none \
 		--exec-opt=native.cgroupdriver=cgroupfs \
@@ -147,6 +193,7 @@ dev: static/js/contained.min.js static/css/contained.min.css ## Build the static
 clean: ## Cleanup any build binaries or packages
 	@echo "+ $@"
 	$(RM) $(NAME)
+	$(RM) -r $(BUILDDIR)
 	$(RM) -r $(CURDIR)/.certs
 
 .PHONY: help
