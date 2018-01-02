@@ -20,3 +20,46 @@
     - test -z "$(golint ./... | grep -v vendor | tee /dev/stderr)"
     - test -z "$(gofmt -s -l . | grep -v vendor | tee /dev/stderr)"
     - go test $(go list ./... | grep -v vendor)
+    - make release
+  deploy:
+    provider: releases
+    api_key:
+      secure: "BNAyNmcLUFQg/ua24FDrBna8MyKHAzUEwHQuglxp4rlp+4CDuFyRWI03N9XnzdOXvl0NnFLwpp154xPhw3O1oqHvEbBnAKZ5yEXtzmXMFlUxBlQa7QJcgFapkyUeNM7FrSr9Pz8TDWGQ8ajRZUSuKJq/NK9geqS55BpxfnvQWfl5BpGsV4D0XM+QDyTbOfdnsCjxsP2T6b7h5v5Yd3xbR5CDlj8kIUxB+ccPQiRz7knnH7v7JLeE4yiee79bwuiOHFJ7RHu8YOZM6f4JDhNwqr4N/qA2m1wyBR+mIt23LxtSpgTx5IAcTdlMvU3Ny7zV1j3R5JmWClxa+tgUZ4FaEfURa8LJ9adWwV9X3HItFaLe5ABpZUSQSDvqz1A6H4qD3SVZMOIrK1y38sYzeuU6BAlTZYtn3Btu1BCTSI8yymqbVBn9siW+Y+JKHsBQs9/7yyI2CC8v4jU54lHnz6NHE58Pc4PgOX8rZTmgn6gLLBLtmJeirjejnPoMTfK/DdX2w5vGTzHxrmuy+0NpHcbsSARvOAnI8Q9fUce3yOI+lVRWFq3v5rK+UTkXzhC7mQcv5yVsHI1CXQf900PX63T4TwHarUQun1+D527RslOSmcCedHXFpuSO4P1cxX2ffj7B4WpaY2hRoJcQAHT6JDdl34oaWt90NLdxh6ZFmQLEWY8="
+    file:
+      - cross/contained.af-linux-amd64.md5
+      - cross/contained.af-windows-386.sha256
+      - cross/contained.af-linux-arm
+      - cross/contained.af-darwin-amd64.md5
+      - cross/contained.af-darwin-amd64
+      - cross/contained.af-solaris-amd64.md5
+      - cross/contained.af-linux-arm64.sha256
+      - cross/contained.af-linux-arm.sha256
+      - cross/contained.af-linux-386.sha256
+      - cross/contained.af-darwin-386.md5
+      - cross/contained.af-windows-386.md5
+      - cross/contained.af-freebsd-amd64.md5
+      - cross/contained.af-linux-arm64.md5
+      - cross/contained.af-linux-arm64
+      - cross/contained.af-freebsd-amd64.sha256
+      - cross/contained.af-freebsd-386.md5
+      - cross/contained.af-linux-amd64.sha256
+      - cross/contained.af-linux-386.md5
+      - cross/contained.af-freebsd-386
+      - cross/contained.af-solaris-amd64.sha256
+      - cross/contained.af-windows-amd64
+      - cross/contained.af-windows-amd64.md5
+      - cross/contained.af-windows-amd64.sha256
+      - cross/contained.af-linux-arm.md5
+      - cross/contained.af-darwin-386.sha256
+      - cross/contained.af-darwin-amd64.sha256
+      - cross/contained.af-windows-386
+      - cross/contained.af-solaris-amd64
+      - cross/contained.af-darwin-386
+      - cross/contained.af-linux-386
+      - cross/contained.af-freebsd-amd64
+      - cross/contained.af-freebsd-386.sha256
+      - cross/contained.af-linux-amd64
+    skip_cleanup: true
+    on:
+      go: tip
+      tags: true
