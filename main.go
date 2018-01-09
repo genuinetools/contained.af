@@ -28,7 +28,7 @@ const (
  Build: %s
 
 `
-	defaultStaticDir   = "/usr/src/contained"
+	defaultStaticDir   = "/usr/src/contained.af"
 	defaultDockerHost  = "http://127.0.0.1:2375"
 	defaultDockerImage = "alpine:latest"
 )
