@@ -33,6 +33,13 @@ var questions = [
         warning: "<strong>Not quite...</strong> Try mounting a tmpfs with <code>mount</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
         answer: false
+    },
+    {
+        description: "<code>CAP_SYS_TIME</code> is the capability that allows a user to set the system clock or real-time (hardware) clock",
+        content: "Do you have access to <code>CAP_SYS_TIME</code>?",
+        warning: "<strong>Not quite...</strong> Try running <code>date -s '00:00:01'</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        answer: false
     }
 
 ];
