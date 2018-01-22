@@ -40,6 +40,13 @@ var questions = [
         warning: "<strong>Not quite...</strong> Try running <code>date -s '00:00:01'</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
         answer: false
+    },
+    {
+        description: "<code>CAP_SYSLOG</code> is the capability that allows a user to execute syslog privilegied operations",
+        content: "Do you have access to <code>CAP_SYSLOG</code>?",
+        warning: "<strong>Not quite...</strong> Try running <code>dmesg -c</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        answer: false
     }
 
 ];
