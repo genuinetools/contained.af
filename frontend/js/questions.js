@@ -47,6 +47,13 @@ var questions = [
         warning: "<strong>Not quite...</strong> Try running <code>dmesg -c</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
         answer: false
+    },
+    {
+        description: "<code>CAP_SYS_MODULE</code> is the capability that allows a user to load and unload kernel modules",
+        content: "Do you have access to <code>CAP_SYS_MODULE</code>?",
+        warning: "<strong>Not quite...</strong> Try running <code>rmmod veth</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        answer: false
     }
 
 ];
