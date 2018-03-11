@@ -28,7 +28,7 @@
   name = "github.com/docker/docker"
   branch = "master"
 
-[[constraint]]
+[[override]]
   name = "github.com/gorilla/websockets"
   branch = "master"
 
