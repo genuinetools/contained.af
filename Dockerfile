@@ -7,7 +7,7 @@ ENV GOPATH /go
 RUN	apk add --no-cache \
 	ca-certificates
 
-COPY . /go/src/github.com/jessfraz/contained.af
+COPY . /go/src/github.com/genuinetools/contained.af
 
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
@@ -16,7 +16,7 @@ RUN set -x \
 		libc-dev \
 		libgcc \
 		make \
-	&& cd /go/src/github.com/jessfraz/contained.af \
+	&& cd /go/src/github.com/genuinetools/contained.af \
 	&& make static \
 	&& mv contained.af /usr/bin/contained.af \
 	&& apk del .build-deps \
