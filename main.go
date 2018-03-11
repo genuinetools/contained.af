@@ -152,16 +152,6 @@ func main() {
 	}
 }
 
-func usageAndExit(message string, exitCode int) {
-	if message != "" {
-		fmt.Fprintf(os.Stderr, message)
-		fmt.Fprintf(os.Stderr, "\n\n")
-	}
-	flag.Usage()
-	fmt.Fprintf(os.Stderr, "\n")
-	os.Exit(exitCode)
-}
-
 // certPool returns an X.509 certificate pool from `caFile`, the certificate file.
 func certPool(caFile string) (*x509.CertPool, error) {
 	// If we should verify the server, we need to load a trusted ca
