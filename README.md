@@ -1,6 +1,6 @@
 # contained.af
 
-[![Travis CI](https://travis-ci.org/jessfraz/contained.af.svg?branch=master)](https://travis-ci.org/jessfraz/contained.af)
+[![Travis CI](https://travis-ci.org/genuinetools/contained.af.svg?branch=master)](https://travis-ci.org/genuinetools/contained.af)
 
 A game for learning about containers, capabilities, and syscalls.
 
