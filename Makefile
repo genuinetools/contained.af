@@ -191,6 +191,7 @@ frontend/js/contained.min.js: devbuild
 	docker run --rm -it \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
+		--disable-content-trust=true \
 		$(DOCKER_IMAGE):dev \
 		uglifyjs --output $@ --compress --mangle -- \
 			frontend/js/xterm.js \
@@ -203,6 +204,7 @@ frontend/css/contained.min.css: devbuild
 	docker run --rm -it \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
+		--disable-content-trust=true \
 		$(DOCKER_IMAGE):dev \
 		sh -c 'cat frontend/css/normalize.css frontend/css/bootstrap.min.css frontend/css/xterm.css frontend/css/custom.css | cleancss -o $@'
 
