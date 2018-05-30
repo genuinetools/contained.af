@@ -47,11 +47,21 @@
             $('#question #correct p').html(q.success);
             $('#question #current').val(index);
 
+            $('#question #hint').addClass('hide');
+
             $('#question blockquote').removeClass('invisible');
             $('#question .content').removeClass('invisible');
             $('#question .btn').removeClass('invisible');
 
             $('#question').removeClass('invisible');
+        };
+
+        var doHint = function(q){
+            if (q.hints.length > 0) {
+                var hint = q.hints[Math.floor(Math.random() * q.hints.length)];
+                $('#question #hint').html(hint);
+                $('#question #hint').removeClass('hide');
+            }
         };
 
         var doWrong = function(){
@@ -90,6 +100,12 @@
             } else {
                 doWrong();
             }
+        });
+
+        $('#hintme').click(function(){
+            var index = $('#question #current').val();
+            //console.log("index: ", index);
+            doHint(questions[index]);
         });
 
         $('#next').click(function(){
