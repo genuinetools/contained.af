@@ -42,9 +42,6 @@ jobs:
           - cross/contained.af-linux-386
           - cross/contained.af-linux-386.md5
           - cross/contained.af-linux-386.sha256
-          - cross/contained.af-solaris-amd64
-          - cross/contained.af-solaris-amd64.md5
-          - cross/contained.af-solaris-amd64.sha256
           - cross/contained.af-windows-amd64
           - cross/contained.af-windows-amd64.md5
           - cross/contained.af-windows-amd64.sha256
