@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
@@ -8,26 +9,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 
 	"github.com/docker/docker/client"
 	"github.com/genuinetools/contained.af/version"
+	"github.com/genuinetools/pkg/cli"
 	"github.com/sirupsen/logrus"
 )
 
 const (
-	// BANNER is what is printed for help/info output
-	BANNER = `                 _        _                _
-  ___ ___  _ __ | |_ __ _(_)_ __   ___  __| |
- / __/ _ \| '_ \| __/ _` + "`" + ` | | '_ \ / _ \/ _` + "" + ` |
-| (_| (_) | | | | || (_| | | | | |  __/ (_| |
- \___\___/|_| |_|\__\__,_|_|_| |_|\___|\__,_|
-
- A game for learning about containers, capabilities, and syscalls.
- Version: %s
- Build: %s
-
-`
 	defaultStaticDir   = "/usr/src/contained.af"
 	defaultDockerHost  = "http://127.0.0.1:2375"
 	defaultDockerImage = "alpine:latest"
@@ -43,113 +32,118 @@ var (
 	port      string
 
 	debug bool
-	vrsn  bool
 )
 
-func init() {
-	// Parse flags
-	flag.StringVar(&dockerHost, "dhost", defaultDockerHost, "host to commmunicate with docker on")
-	flag.StringVar(&dockerCACert, "dcacert", "", "trust certs signed only by this CA for docker host")
-	flag.StringVar(&dockerCert, "dcert", "", "path to TLS certificate file for docker host")
-	flag.StringVar(&dockerKey, "dkey", "", "path to TLS key file for docker host")
-
-	flag.StringVar(&staticDir, "frontend", defaultStaticDir, "directory that holds the static frontend files")
-	flag.StringVar(&port, "port", "10000", "port for server")
-
-	flag.BoolVar(&vrsn, "version", false, "print version and exit")
-	flag.BoolVar(&vrsn, "v", false, "print version and exit (shorthand)")
-	flag.BoolVar(&debug, "d", false, "run in debug mode")
-
-	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, version.VERSION, version.GITCOMMIT))
-		flag.PrintDefaults()
-	}
-
-	flag.Parse()
-
-	if vrsn {
-		fmt.Printf("contained version %s, build %s", version.VERSION, version.GITCOMMIT)
-		os.Exit(0)
-	}
-
-	// Set log level
-	if debug {
-		logrus.SetLevel(logrus.DebugLevel)
-	}
-}
-
 func main() {
-	dockerURL, err := url.Parse(dockerHost)
-	if err != nil {
-		logrus.Fatal(err)
+	// Create a new cli program.
+	p := cli.NewProgram()
+	p.Name = "contained.af"
+	p.Description = "A game for learning about containers, capabilities, and syscalls"
+
+	// Set the GitCommit and Version.
+	p.GitCommit = version.GITCOMMIT
+	p.Version = version.VERSION
+
+	// Setup the global flags.
+	p.FlagSet = flag.NewFlagSet("global", flag.ExitOnError)
+	p.FlagSet.StringVar(&dockerHost, "dhost", defaultDockerHost, "host to commmunicate with docker on")
+	p.FlagSet.StringVar(&dockerCACert, "dcacert", "", "trust certs signed only by this CA for docker host")
+	p.FlagSet.StringVar(&dockerCert, "dcert", "", "path to TLS certificate file for docker host")
+	p.FlagSet.StringVar(&dockerKey, "dkey", "", "path to TLS key file for docker host")
+
+	p.FlagSet.StringVar(&staticDir, "frontend", defaultStaticDir, "directory that holds the static frontend files")
+	p.FlagSet.StringVar(&port, "port", "10000", "port for server")
+
+	p.FlagSet.BoolVar(&debug, "d", false, "enable debug logging")
+
+	// Set the before function.
+	p.Before = func(ctx context.Context) error {
+		// Set the log level.
+		if debug {
+			logrus.SetLevel(logrus.DebugLevel)
+		}
+
+		return nil
 	}
 
-	// setup client TLS
-	tlsConfig := tls.Config{
-		// Prefer TLS1.2 as the client minimum
-		MinVersion: tls.VersionTLS12,
-		CipherSuites: []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-			tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-		},
-		InsecureSkipVerify: false,
-	}
-
-	if dockerCACert != "" {
-		CAs, err := certPool(dockerCACert)
+	// Set the main program action.
+	p.Action = func(ctx context.Context, args []string) error {
+		dockerURL, err := url.Parse(dockerHost)
 		if err != nil {
 			logrus.Fatal(err)
 		}
-		tlsConfig.RootCAs = CAs
-	}
 
-	c := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tlsConfig,
-		},
-	}
-
-	if dockerCert != "" && dockerKey != "" {
-		tlsCert, err := tls.LoadX509KeyPair(dockerCert, dockerKey)
-		if err != nil {
-			logrus.Fatalf("Could not load X509 key pair: %v. Make sure the key is not encrypted", err)
+		// setup client TLS
+		tlsConfig := tls.Config{
+			// Prefer TLS1.2 as the client minimum
+			MinVersion: tls.VersionTLS12,
+			CipherSuites: []uint16{
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+			},
+			InsecureSkipVerify: false,
 		}
-		tlsConfig.Certificates = []tls.Certificate{tlsCert}
+
+		if dockerCACert != "" {
+			CAs, err := certPool(dockerCACert)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			tlsConfig.RootCAs = CAs
+		}
+
+		c := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tlsConfig,
+			},
+		}
+
+		if dockerCert != "" && dockerKey != "" {
+			tlsCert, err := tls.LoadX509KeyPair(dockerCert, dockerKey)
+			if err != nil {
+				logrus.Fatalf("Could not load X509 key pair: %v. Make sure the key is not encrypted", err)
+			}
+			tlsConfig.Certificates = []tls.Certificate{tlsCert}
+		}
+
+		defaultHeaders := map[string]string{"User-Agent": "engine-api-cli-1.0"}
+		dcli, err := client.NewClient(dockerHost, "", c, defaultHeaders)
+		if err != nil {
+			logrus.Fatal(err)
+		}
+
+		h := &handler{
+			dcli:      dcli,
+			dockerURL: dockerURL,
+			tlsConfig: &tlsConfig,
+		}
+
+		// pull alpine image if we don't already have it
+		if err := h.pullImage(defaultDockerImage); err != nil {
+			logrus.Fatalf("pulling %s failed: %v", defaultDockerImage, err)
+		}
+
+		// websocket handler
+		http.HandleFunc("/term", h.websocketHandler)
+
+		// ping handler
+		http.HandleFunc("/ping", pingHandler)
+
+		// info handler
+		http.HandleFunc("/info", h.infoHandler)
+
+		// static files
+		http.Handle("/", http.FileServer(http.Dir(staticDir)))
+
+		logrus.Debugf("Server listening on %s", port)
+		if err := http.ListenAndServe(":"+port, nil); err != nil {
+			logrus.Fatalf("starting server failed: %v", err)
+		}
+		return nil
 	}
 
-	defaultHeaders := map[string]string{"User-Agent": "engine-api-cli-1.0"}
-	dcli, err := client.NewClient(dockerHost, "", c, defaultHeaders)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-
-	h := &handler{
-		dcli:      dcli,
-		dockerURL: dockerURL,
-		tlsConfig: &tlsConfig,
-	}
-
-	// pull alpine image if we don't already have it
-	if err := h.pullImage(defaultDockerImage); err != nil {
-		logrus.Fatalf("pulling %s failed: %v", defaultDockerImage, err)
-	}
-
-	// websocket handler
-	http.HandleFunc("/term", h.websocketHandler)
-
-	// ping handler
-	http.HandleFunc("/ping", pingHandler)
-
-	// info handler
-	http.HandleFunc("/info", h.infoHandler)
-
-	// static files
-	http.Handle("/", http.FileServer(http.Dir(staticDir)))
-
-	logrus.Debugf("Server listening on %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		logrus.Fatalf("starting server failed: %v", err)
-	}
+	// Run our program.
+	p.Run()
 }
 
 // certPool returns an X.509 certificate pool from `caFile`, the certificate file.
