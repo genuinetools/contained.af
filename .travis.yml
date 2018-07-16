@@ -18,18 +18,39 @@ jobs:
       deploy:
         provider: releases
         file:
-          - cross/contained.af-linux-amd64.md5
+          - cross/contained.af-darwin-amd64
+          - cross/contained.af-darwin-amd64.md5
+          - cross/contained.af-darwin-amd64.sha256
+          - cross/contained.af-darwin-386
+          - cross/contained.af-darwin-386.md5
+          - cross/contained.af-darwin-386.sha256
+          - cross/contained.af-freebsd-amd64
+          - cross/contained.af-freebsd-amd64.md5
+          - cross/contained.af-freebsd-amd64.sha256
+          - cross/contained.af-freebsd-386
+          - cross/contained.af-freebsd-386.md5
+          - cross/contained.af-freebsd-386.sha256
           - cross/contained.af-linux-arm
-          - cross/contained.af-linux-arm64.sha256
-          - cross/contained.af-linux-arm.sha256
-          - cross/contained.af-linux-386.sha256
-          - cross/contained.af-linux-arm64.md5
-          - cross/contained.af-linux-arm64
-          - cross/contained.af-linux-amd64.sha256
-          - cross/contained.af-linux-386.md5
           - cross/contained.af-linux-arm.md5
-          - cross/contained.af-linux-386
+          - cross/contained.af-linux-arm.sha256
+          - cross/contained.af-linux-arm64
+          - cross/contained.af-linux-arm64.md5
+          - cross/contained.af-linux-arm64.sha256
           - cross/contained.af-linux-amd64
+          - cross/contained.af-linux-amd64.md5
+          - cross/contained.af-linux-amd64.sha256
+          - cross/contained.af-linux-386
+          - cross/contained.af-linux-386.md5
+          - cross/contained.af-linux-386.sha256
+          - cross/contained.af-solaris-amd64
+          - cross/contained.af-solaris-amd64.md5
+          - cross/contained.af-solaris-amd64.sha256
+          - cross/contained.af-windows-amd64
+          - cross/contained.af-windows-amd64.md5
+          - cross/contained.af-windows-amd64.sha256
+          - cross/contained.af-windows-386
+          - cross/contained.af-windows-386.md5
+          - cross/contained.af-windows-386.sha256
         skip_cleanup: true
         on:
           tags: true

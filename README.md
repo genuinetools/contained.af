@@ -1,6 +1,8 @@
 # contained.af
 
-[![Travis CI](https://travis-ci.org/genuinetools/contained.af.svg?branch=master)](https://travis-ci.org/genuinetools/contained.af)
+[![Travis CI](https://img.shields.io/travis/genuinetools/contained.af.svg?style=for-the-badge)](https://travis-ci.org/genuinetools/contained.af)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/genuinetools/contained.af)
+[![Github All Releases](https://img.shields.io/github/downloads/genuinetools/contained.af/total.svg?style=for-the-badge)](https://github.com/genuinetools/contained.af/releases)
 
 A game for learning about containers, capabilities, and syscalls.
 
