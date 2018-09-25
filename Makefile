@@ -16,7 +16,7 @@ prebuild:
 dind: stop-dind ## Starts a docker-in-docker container for running the tests with.
 	docker run -d  \
 		--tmpfs /var/lib/docker \
-		--name $(DIND_CONTAINER) \
+		--name $(NAME)-dind \
 		--privileged \
 		-p 10000:10000 \
 		-v $(CURDIR)/.certs:/etc/docker/ssl \
@@ -40,10 +40,10 @@ stop-dind: ## Stops the docker-in-docker container.
 	@docker rm -f $(NAME)-dind >/dev/null 2>&1 || true
 
 .PHONY: run
-run: image ## Run the server locally in a docker container.
+run: dind image ## Run the server locally in a docker container.
 	docker run --rm -i $(DOCKER_FLAGS) \
 		-v $(CURDIR)/.certs:/etc/docker/ssl:ro \
-		--net container:$(DIND_CONTAINER) \
+		--net container:$(NAME)-dind \
 		--disable-content-trust=true \
 		$(REGISTRY)/$(NAME) -d \
 		--dcacert=/etc/docker/ssl/cacert.pem \
