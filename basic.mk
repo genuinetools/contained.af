@@ -146,6 +146,10 @@ REGISTRY := r.j3ss.co
 image: ## Create the docker image from the Dockerfile.
 	@docker build --rm --force-rm -t $(REGISTRY)/$(NAME) .
 
+.PHONY: image-dev
+image-dev:
+	@docker build --rm --force-rm -f Dockerfile.dev -t $(REGISTRY)/$(NAME):dev .
+
 .PHONY: AUTHORS
 AUTHORS:
 	@$(file >$@,# This file lists all individuals having contributed content to the repository.)
@@ -170,3 +174,12 @@ clean: ## Cleanup any build binaries or packages.
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | sed 's/^[^:]*://g' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+check_defined = \
+    $(strip $(foreach 1,$1, \
+	$(call __check_defined,$1,$(strip $(value 2)))))
+
+__check_defined = \
+    $(if $(value $1),, \
+    $(error Undefined $1$(if $2, ($2))$(if $(value @), \
+    required by target `$@')))

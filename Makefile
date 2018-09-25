@@ -39,10 +39,6 @@ dind: stop-dind ## Starts a docker-in-docker container for running the tests wit
 stop-dind: ## Stops the docker-in-docker container.
 	@docker rm -f $(NAME)-dind >/dev/null 2>&1 || true
 
-.PHONY: image-dev
-image-dev:
-	docker build --rm --force-rm -f Dockerfile.dev -t $(REGISTRY)/$(NAME):dev .
-
 .PHONY: run
 run: image ## Run the server locally in a docker container.
 	docker run --rm -i $(DOCKER_FLAGS) \
@@ -53,11 +49,13 @@ run: image ## Run the server locally in a docker container.
 		--dcert=/etc/docker/ssl/client.cert \
 		--dkey=/etc/docker/ssl/client.key
 
+DOCKER_FLAGS+=--rm -i \
+	--disable-content-trust=true
+DOCKER_FLAGS+=-v $(CURDIR):/go/src/$(PKG)
+DOCKER_FLAGS+=--workdir /go/src/$(PKG)
+
 frontend/js/contained.min.js: image-dev
-	docker run --rm -i $(DOCKER_FLAGS) \
-		-v $(CURDIR)/:/usr/src/contained.af \
-		--workdir /usr/src/contained.af \
-		--disable-content-trust=true \
+	docker run $(DOCKER_FLAGS) \
 		$(REGISTRY)/$(NAME):dev \
 		uglifyjs --output $@ --compress --mangle -- \
 			frontend/js/xterm.js \
@@ -67,10 +65,7 @@ frontend/js/contained.min.js: image-dev
 			frontend/js/main.js
 
 frontend/css/contained.min.css: image-dev
-	docker run --rm -i $(DOCKER_FLAGS) \
-		-v $(CURDIR)/:/usr/src/contained.af \
-		--workdir /usr/src/contained.af \
-		--disable-content-trust=true \
+	docker run $(DOCKER_FLAGS) \
 		$(REGISTRY)/$(NAME):dev \
 		sh -c 'cat frontend/css/normalize.css frontend/css/bootstrap.min.css frontend/css/xterm.css frontend/css/custom.css | cleancss -o $@'
 
