@@ -12,11 +12,8 @@ include basic.mk
 .PHONY: prebuild
 prebuild:
 
-# Set the graph driver as the current graphdriver if not set.
-DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed 's/.*: //'))
 .PHONY: dind
-dind: ## Starts a docker-in-docker container to be used with a local server.
-	docker build --rm --force-rm -f Dockerfile.dind -t $(REGISTRY)/docker:userns .
+dind: stop-dind ## Starts a docker-in-docker container for running the tests with.
 	docker run -d  \
 		--tmpfs /var/lib/docker \
 		--name $(DIND_CONTAINER) \
@@ -38,9 +35,17 @@ dind: ## Starts a docker-in-docker container to be used with a local server.
 		--tlskey=/etc/docker/ssl/server.key \
 		--tlscert=/etc/docker/ssl/server.cert
 
+.PHONY: stop-dind
+stop-dind: ## Stops the docker-in-docker container.
+	@docker rm -f $(NAME)-dind >/dev/null 2>&1 || true
+
+.PHONY: image-dev
+image-dev:
+	docker build --rm --force-rm -f Dockerfile.dev -t $(REGISTRY)/$(NAME):dev .
+
 .PHONY: run
 run: image ## Run the server locally in a docker container.
-	docker run --rm -it \
+	docker run --rm -i $(DOCKER_FLAGS) \
 		-v $(CURDIR)/.certs:/etc/docker/ssl:ro \
 		--net container:$(DIND_CONTAINER) \
 		$(REGISTRY)/$(NAME) -d \
@@ -48,12 +53,8 @@ run: image ## Run the server locally in a docker container.
 		--dcert=/etc/docker/ssl/client.cert \
 		--dkey=/etc/docker/ssl/client.key
 
-.PHONY: image-dev
-image-dev:
-	docker build --rm --force-rm -f Dockerfile.dev -t $(REGISTRY)/$(NAME):dev .
-
 frontend/js/contained.min.js: image-dev
-	docker run --rm -it \
+	docker run --rm -i $(DOCKER_FLAGS) \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
 		--disable-content-trust=true \
@@ -66,7 +67,7 @@ frontend/js/contained.min.js: image-dev
 			frontend/js/main.js
 
 frontend/css/contained.min.css: image-dev
-	docker run --rm -it \
+	docker run --rm -i $(DOCKER_FLAGS) \
 		-v $(CURDIR)/:/usr/src/contained.af \
 		--workdir /usr/src/contained.af \
 		--disable-content-trust=true \
