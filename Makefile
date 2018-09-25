@@ -44,6 +44,7 @@ run: image ## Run the server locally in a docker container.
 	docker run --rm -i $(DOCKER_FLAGS) \
 		-v $(CURDIR)/.certs:/etc/docker/ssl:ro \
 		--net container:$(DIND_CONTAINER) \
+		--disable-content-trust=true \
 		$(REGISTRY)/$(NAME) -d \
 		--dcacert=/etc/docker/ssl/cacert.pem \
 		--dcert=/etc/docker/ssl/client.cert \
