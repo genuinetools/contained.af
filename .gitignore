@@ -42,10 +42,13 @@ Icon
 .Spotlight-V100
 .Trashes
 
-.certs/
 contained.af
 cross/
 
 # Go coverage results
 coverage.txt
 profile.out
+
+!go.mod
+
+.certs/
