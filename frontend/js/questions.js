@@ -16,7 +16,7 @@ var questions = [
         answer: true
     },
     {
-        description: "The <code>nanosleep</code> syscall  suspends the execution of the calling thread until either at least the time specified in *req has elapsed, or the delivery of a signal that triggers the invocation of a handler in the calling thread or that terminates the process.",
+        description: "The <code>nanosleep</code> syscall suspends the execution of the calling thread until either at least the time specified in *req has elapsed, or the delivery of a signal that triggers the invocation of a handler in the calling thread or that terminates the process.",
         content: "Is the <code>nanosleep</code> syscall blocked?",
         warning: "<strong>Not quite...</strong> Try running <code>sleep</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
@@ -52,7 +52,7 @@ var questions = [
         content: "Do you have access to <code>CAP_SYSLOG</code>?",
         warning: "<strong>Not quite...</strong> Try running <code>dmesg -c</code>.",
         success: "<strong>Congrats!</strong> You are correct.",
-        hints: ["Do you know dmseg?", "What's a syslog capability?"],
+        hints: ["Do you know dmesg?", "What's a syslog capability?"],
         answer: false
     },
     {
