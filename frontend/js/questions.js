@@ -24,6 +24,14 @@ var questions = [
         answer: true
     },
     {
+        description: "The <code>mknod</code> syscall can make block special files. This can grant access to the underlying hardware.",
+        content: "Can you make a block special file and access it?",
+        warning: "<strong>Not quite...</strong> Try something like <code>mknod /dev/sda b 8 0</code>.",
+        success: "<strong>Congrats!</strong> You are correct.",
+        hints: ["Maybe you'd like to make a directory (mkdir), make a fifo (mkfifo), or make a.. nod? <a href='https://www.kernel.org/doc/Documentation/admin-guide/devices.txt'>Click here for documentation on the major/minor numbers</a>."],
+        answer: false
+    },
+    {
         description: "AppArmor is a Linux security module that allows for setting permissions and auditing processes.",
         content: "Is the container running with an apparmor profile?",
         warning: "<strong>Not quite...</strong> See profiles by running <code>cat /proc/self/attr/current</code>.",
