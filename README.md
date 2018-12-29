@@ -10,6 +10,8 @@ To add a question edit this file: [frontend/js/questions.js](frontend/js/questio
 
 <!-- toc -->
 
+- [Run contained.af locally](#run-containedaf-locally)
+
 <!-- tocstop -->
 
 ## Run contained.af locally
