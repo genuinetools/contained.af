@@ -8,6 +8,10 @@ A game for learning about containers, capabilities, and syscalls.
 
 To add a question edit this file: [frontend/js/questions.js](frontend/js/questions.js).
 
+<!-- toc -->
+
+<!-- tocstop -->
+
 ## Run contained.af locally
 
 Contained is made of a few components:
