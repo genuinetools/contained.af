@@ -152,7 +152,7 @@ func certPool(caFile string) (*x509.CertPool, error) {
 	certPool := x509.NewCertPool()
 	pem, err := ioutil.ReadFile(caFile)
 	if err != nil {
-		return nil, fmt.Errorf("Could not read CA certificate %q: %v", caFile, err)
+		return nil, fmt.Errorf("could not read CA certificate %q: %v", caFile, err)
 	}
 	if !certPool.AppendCertsFromPEM(pem) {
 		return nil, fmt.Errorf("failed to append certificates from PEM file: %q", caFile)
