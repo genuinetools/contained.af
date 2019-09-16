@@ -3,6 +3,7 @@ NAME := contained.af
 PKG := github.com/genuinetools/$(NAME)
 
 CGO_ENABLED := 0
+LISTEN_PORT := 10000
 
 # Set any default go build tags.
 BUILDTAGS :=
@@ -18,7 +19,7 @@ dind: stop-dind ## Starts a docker-in-docker container for running the tests wit
 		--tmpfs /var/lib/docker \
 		--name $(NAME)-dind \
 		--privileged \
-		-p 10000:10000 \
+		-p $(LISTEN_PORT):$(LISTEN_PORT) \
 		-v $(CURDIR)/.certs:/etc/docker/ssl \
 		$(REGISTRY)/docker:userns \
 		dockerd -D --storage-driver $(DOCKER_GRAPHDRIVER) \
@@ -48,7 +49,8 @@ run: dind image ## Run the server locally in a docker container.
 		$(REGISTRY)/$(NAME) -d \
 		--dcacert=/etc/docker/ssl/cacert.pem \
 		--dcert=/etc/docker/ssl/client.cert \
-		--dkey=/etc/docker/ssl/client.key
+		--dkey=/etc/docker/ssl/client.key \
+		--port=$(LISTEN_PORT)
 
 DOCKER_FLAGS+=--rm -i \
 	--disable-content-trust=true
