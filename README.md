@@ -1,6 +1,7 @@
 # contained.af
 
-[![Travis CI](https://img.shields.io/travis/genuinetools/contained.af.svg?style=for-the-badge)](https://travis-ci.org/genuinetools/contained.af)
+![make-all](https://github.com/genuinetools/contained.af/workflows/make%20all/badge.svg)
+![make-image](https://github.com/genuinetools/contained.af/workflows/make%20image/badge.svg)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/genuinetools/contained.af)
 [![Github All Releases](https://img.shields.io/github/downloads/genuinetools/contained.af/total.svg?style=for-the-badge)](https://github.com/genuinetools/contained.af/releases)
 
@@ -8,11 +9,8 @@ A game for learning about containers, capabilities, and syscalls.
 
 To add a question edit this file: [frontend/js/questions.js](frontend/js/questions.js).
 
-<!-- toc -->
-
-- [Run contained.af locally](#run-containedaf-locally)
-
-<!-- tocstop -->
+<!-- START doctoc -->
+<!-- END doctoc -->
 
 ## Run contained.af locally
 

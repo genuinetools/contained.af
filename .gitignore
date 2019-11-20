@@ -50,5 +50,3 @@ coverage.txt
 profile.out
 
 !go.mod
-
-.certs/

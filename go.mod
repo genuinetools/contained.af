@@ -31,3 +31,5 @@ require (
 	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect
 	gotest.tools v2.1.0+incompatible // indirect
 )
+
+go 1.13
