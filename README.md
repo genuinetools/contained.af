@@ -9,8 +9,13 @@ A game for learning about containers, capabilities, and syscalls.
 
 To add a question edit this file: [frontend/js/questions.js](frontend/js/questions.js).
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Run contained.af locally](#run-containedaf-locally)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Run contained.af locally
 
