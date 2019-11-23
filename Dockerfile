@@ -29,5 +29,8 @@ FROM alpine:latest
 COPY --from=builder /usr/bin/contained.af /usr/bin/contained.af
 COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs
 
+COPY frontend /usr/src/contained.af/
+WORKDIR /usr/src/contained.af
+
 ENTRYPOINT [ "contained.af" ]
 CMD [ "--help" ]
