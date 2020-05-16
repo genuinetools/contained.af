@@ -63,7 +63,7 @@ frontend/js/contained.min.js: image-dev
 		uglifyjs --output $@ --compress --mangle -- \
 			frontend/js/xterm.js \
 			frontend/js/fit.js \
-			frontend/js/jquery-2.2.4.min.js \
+			frontend/js/jquery-3.5.1.min.js \
 			frontend/js/questions.js \
 			frontend/js/main.js
 
