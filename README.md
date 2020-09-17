@@ -1,7 +1,7 @@
 # contained.af
 
-![make-all](https://github.com/genuinetools/contained.af/workflows/make%20all/badge.svg)
-![make-image](https://github.com/genuinetools/contained.af/workflows/make%20image/badge.svg)
+[![make-all](https://github.com/genuinetools/contained.af/workflows/make%20all/badge.svg)](https://github.com/genuinetools/contained.af/actions?query=workflow%3A%22make+all%22)
+[![make-image](https://github.com/genuinetools/contained.af/workflows/make%20image/badge.svg)](https://github.com/genuinetools/contained.af/actions?query=workflow%3A%22make+image%22)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/genuinetools/contained.af)
 [![Github All Releases](https://img.shields.io/github/downloads/genuinetools/contained.af/total.svg?style=for-the-badge)](https://github.com/genuinetools/contained.af/releases)
 
