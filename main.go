@@ -99,7 +99,7 @@ func main() {
 			}
 			tlsConfig.Certificates = []tls.Certificate{tlsCert}
 		}
-		
+
 		c := &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tlsConfig,

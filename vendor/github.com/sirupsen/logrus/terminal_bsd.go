@@ -1,5 +1,7 @@
+//go:build (darwin || freebsd || openbsd || netbsd || dragonfly) && !appengine && !gopherjs
 // +build darwin freebsd openbsd netbsd dragonfly
-// +build !appengine,!gopherjs
+// +build !appengine
+// +build !gopherjs
 
 package logrus
 

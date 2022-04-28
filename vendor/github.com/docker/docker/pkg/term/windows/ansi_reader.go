@@ -1,3 +1,4 @@
+//go:build windows
 // +build windows
 
 package windowsconsole // import "github.com/docker/docker/pkg/term/windows"

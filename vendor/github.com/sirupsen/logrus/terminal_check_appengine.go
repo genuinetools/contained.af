@@ -1,3 +1,4 @@
+//go:build appengine || gopherjs
 // +build appengine gopherjs
 
 package logrus
