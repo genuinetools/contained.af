@@ -92,18 +92,18 @@ func main() {
 			tlsConfig.RootCAs = CAs
 		}
 
-		c := &http.Client{
-			Transport: &http.Transport{
-				TLSClientConfig: &tlsConfig,
-			},
-		}
-
 		if dockerCert != "" && dockerKey != "" {
 			tlsCert, err := tls.LoadX509KeyPair(dockerCert, dockerKey)
 			if err != nil {
 				logrus.Fatalf("Could not load X509 key pair: %v. Make sure the key is not encrypted", err)
 			}
 			tlsConfig.Certificates = []tls.Certificate{tlsCert}
+		}
+		
+		c := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tlsConfig,
+			},
 		}
 
 		defaultHeaders := map[string]string{"User-Agent": "engine-api-cli-1.0"}
