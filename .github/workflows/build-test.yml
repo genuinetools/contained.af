@@ -1,7 +1,7 @@
 name: build & test
 on:
   push:
-    branches: main
+    branches: master
     paths:
       - '**.go'
       - .github/workflows/build-test.yml
