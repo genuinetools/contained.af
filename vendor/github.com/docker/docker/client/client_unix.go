@@ -1,4 +1,3 @@
-//go:build linux || freebsd || openbsd || darwin
 // +build linux freebsd openbsd darwin
 
 package client // import "github.com/docker/docker/client"
