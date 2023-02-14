@@ -1,4 +1,3 @@
-//go:build !windows
 // +build !windows
 
 package term // import "github.com/docker/docker/pkg/term"
