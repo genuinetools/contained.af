@@ -38,7 +38,7 @@ github.com/docker/go-connections/tlsconfig
 github.com/docker/go-units
 # github.com/genuinetools/pkg v0.0.0-20180910213200-1c141f661797
 github.com/genuinetools/pkg/cli
-# github.com/gogo/protobuf v1.1.1
+# github.com/gogo/protobuf v1.3.2
 github.com/gogo/protobuf/proto
 # github.com/gorilla/websocket v1.4.0
 github.com/gorilla/websocket
@@ -51,13 +51,13 @@ github.com/opencontainers/image-spec/specs-go/v1
 github.com/pkg/errors
 # github.com/sirupsen/logrus v1.0.6
 github.com/sirupsen/logrus
-# golang.org/x/crypto v0.0.0-20180910181607-0e37d006457b
+# golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 golang.org/x/crypto/ssh/terminal
-# golang.org/x/net v0.0.0-20180925072008-f04abc6bdfa7
-golang.org/x/net/context
+# golang.org/x/net v0.0.0-20201021035429-f5854403a974
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/internal/socks
 golang.org/x/net/proxy
-# golang.org/x/sys v0.0.0-20180925112736-b09afc3d579e
+# golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
