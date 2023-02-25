@@ -5,7 +5,7 @@ github.com/Azure/go-ansiterm/winterm
 github.com/Microsoft/go-winio
 # github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5
 github.com/Nvveen/Gotty
-# github.com/docker/distribution v0.0.0-20180920194744-16128bbac47f
+# github.com/docker/distribution v2.8.0+incompatible
 github.com/docker/distribution/digestset
 github.com/docker/distribution/reference
 # github.com/docker/docker v0.0.0-20180924202107-a9c061deec0f

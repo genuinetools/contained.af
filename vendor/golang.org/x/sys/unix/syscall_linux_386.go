@@ -5,7 +5,6 @@
 // TODO(rsc): Rewrite all nn(SP) references into name+(nn-8)(FP)
 // so that go vet can check that they are correct.
 
-//go:build 386 && linux
 // +build 386,linux
 
 package unix
