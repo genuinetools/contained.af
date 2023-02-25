@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build darwin || dragonfly || freebsd || (linux && !appengine) || netbsd || openbsd
 // +build darwin dragonfly freebsd linux,!appengine netbsd openbsd
 
 // Package terminal provides support functions for dealing with terminals, as

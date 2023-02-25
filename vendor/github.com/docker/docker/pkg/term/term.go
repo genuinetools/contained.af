@@ -1,4 +1,3 @@
-//go:build !windows
 // +build !windows
 
 // Package term provides structures and helper functions to work with

@@ -58,6 +58,7 @@ golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/internal/socks
 golang.org/x/net/proxy
-# golang.org/x/sys v0.0.0-20180925112736-b09afc3d579e
+# golang.org/x/sys v0.1.0
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
