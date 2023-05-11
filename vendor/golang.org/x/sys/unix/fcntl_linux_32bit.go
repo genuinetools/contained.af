@@ -1,4 +1,3 @@
-//go:build (linux && 386) || (linux && arm) || (linux && mips) || (linux && mipsle)
 // +build linux,386 linux,arm linux,mips linux,mipsle
 
 // Copyright 2014 The Go Authors. All rights reserved.

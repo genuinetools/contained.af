@@ -8,8 +8,8 @@ github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5/go.mod h1:lmUJ/7eu/Q8
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/docker/distribution v0.0.0-20180920194744-16128bbac47f h1:hYf+mPizfvpH6VgIxdntnOmQHd1F1mQUc1oG+j3Ol2g=
-github.com/docker/distribution v0.0.0-20180920194744-16128bbac47f/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
+github.com/docker/distribution v2.8.2-beta.1+incompatible h1:gILO60VLD2v28ozemv4aAwDb8ds5U2O/vD/sBXbd7Rw=
+github.com/docker/distribution v2.8.2-beta.1+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
 github.com/docker/docker v0.0.0-20180924202107-a9c061deec0f h1:W4fbqg0JUwy6lLesoJaV/rE0fwAmtdtinMa64X1CEh0=
 github.com/docker/docker v0.0.0-20180924202107-a9c061deec0f/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/go-connections v0.4.0 h1:El9xVISelRB7BuFusrZozjnkIM5YnzCViNKohAFqRJQ=
